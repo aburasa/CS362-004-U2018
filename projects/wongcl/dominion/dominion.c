@@ -44,6 +44,19 @@ int effectSmithy(int handPos, int currentPlayer, struct gameState *state) {
   return 0;
 }
 
+// Assignment 2 card effect function for Village
+int effectVillage(int handPos, int currentPlayer, struct gameState *state) {
+  //+1 Card
+  drawCard(currentPlayer, state);
+
+  //+2 Actions
+  state->numActions = state->numActions + 2;
+
+  //discard played card from hand
+  discardCard(handPos, currentPlayer, state, 0);
+  return 0;
+}
+
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
     return 1;
@@ -850,15 +863,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return effectSmithy(handPos, currentPlayer, state);
 		
     case village:
-      //+1 Card
-      drawCard(currentPlayer, state);
-			
-      //+2 Actions
-      state->numActions = state->numActions + 2;
-			
-      //discard played card from hand
-      discardCard(handPos, currentPlayer, state, 0);
-      return 0;
+      return effectVillage(handPos, currentPlayer, state);
 		
     case baron:
       state->numBuys++;//Increase buys by 1!
