@@ -99,7 +99,10 @@ int effectCouncilRoom(int handPos, int currentPlayer, struct gameState *state) {
   //Each other player draws a card
   for (int i = 0; i < state->numPlayers; i++)
   {
-    drawCard(i, state);
+    if ( i != currentPlayer )
+    {
+      drawCard(i, state);
+    }
   }
 
   //put played card in played card pile
