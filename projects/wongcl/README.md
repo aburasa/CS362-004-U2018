@@ -1,1 +1,1 @@
-My name is Clifford Wong, wongcl
+This is my assignment-2 submission!
