@@ -24,7 +24,7 @@ int effectAdventurer(int currentPlayer, struct gameState *state, int *temphand) 
       z++;
     }
   }
-  while(z-1>=0){
+  while(z-1>0){
     state->discard[currentPlayer][state->discardCount[currentPlayer]++]=temphand[z-1]; // discard all cards in play that have been drawn
     z=z-1;
   }
@@ -40,7 +40,7 @@ int effectSmithy(int handPos, int currentPlayer, struct gameState *state) {
   }
 
   //discard card from hand
-  discardCard(handPos, currentPlayer, state, 0);
+  discardCard(handPos, currentPlayer, state, 1);
   return 0;
 }
 
@@ -52,6 +52,9 @@ int effectVillage(int handPos, int currentPlayer, struct gameState *state) {
   //+2 Actions
   state->numActions = state->numActions + 2;
 
+  //+1 Buy
+  state->numBuys++;
+
   //discard played card from hand
   discardCard(handPos, currentPlayer, state, 0);
   return 0;
@@ -61,14 +64,14 @@ int effectVillage(int handPos, int currentPlayer, struct gameState *state) {
 int effectSteward(int handPos, int currentPlayer, int choice1, int choice2, int choice3, struct gameState *state) {
   if (choice1 == 1)
   {
-    //+2 cards
-    drawCard(currentPlayer, state);
-    drawCard(currentPlayer, state);
+    //+2 coins
+    state->coins = state->coins + 2;
   }
   else if (choice1 == 2)
   {
-    //+2 coins
-    state->coins = state->coins + 2;
+    //+2 cards
+    drawCard(currentPlayer, state);
+    drawCard(currentPlayer, state);
   }
   else
   {
@@ -96,10 +99,7 @@ int effectCouncilRoom(int handPos, int currentPlayer, struct gameState *state) {
   //Each other player draws a card
   for (int i = 0; i < state->numPlayers; i++)
   {
-    if ( i != currentPlayer )
-    {
-      drawCard(i, state);
-    }
+    drawCard(i, state);
   }
 
   //put played card in played card pile
