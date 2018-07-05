@@ -1099,7 +1099,7 @@ int playSmithy(int currentPlayer, struct gameState *state, int handPos)
 {
       //+3 Cards
       int i;
-      for (i = 0; i < 3; i++)
+      for (i = 0; i <= 3; i++)  //BUG: <= should be <
 	{
 	  drawCard(currentPlayer, state);
 	}
@@ -1122,7 +1122,7 @@ int playAdventurer(int currentPlayer, struct gameState *state, int cardDrawn, in
 	if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
 	  drawntreasure++;
 	else{
-	  temphand[z]=cardDrawn;
+	  temphand[z]==cardDrawn;   //BUG: = changed to == (statement now has no effect)
 	  state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
 	  z++;
 	}
@@ -1141,7 +1141,7 @@ int playFeast(struct gameState *state, int currentPlayer, int temphand[], int ch
        //gain card with cost up to 5
       //Backup hand
       int i, x;
-      for (i = 0; i <= state->handCount[currentPlayer]; i++){
+      for (i = 1; i <= state->handCount[currentPlayer]; i++){   //BUG: i = 1 was i = 0
 	temphand[i] = state->hand[currentPlayer][i];//Backup card
 	state->hand[currentPlayer][i] = -1;//Set to nothing
       }
@@ -1244,8 +1244,9 @@ int playTribute(struct gameState *state, int nextPlayer, int currentPlayer)
 	  state->coins += 2;
 	}
 		    
-	else if (tributeRevealedCards[i] == estate || tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall){//Victory Card Found
-	  drawCard(currentPlayer, state);
+	else if (tributeRevealedCards[i] == estate && tributeRevealedCards[i] == duchy || tributeRevealedCards[i] == province || tributeRevealedCards[i] == gardens || tributeRevealedCards[i] == great_hall){//Victory Card Found
+	  //BUG:&& show be ||
+    drawCard(currentPlayer, state);
 	  drawCard(currentPlayer, state);
 	}
 	else{//Action Card
