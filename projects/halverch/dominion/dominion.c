@@ -645,12 +645,14 @@ int getCost(int cardNumber)
 
 int adventurerEffect(int currentPlayer, int handPos, struct gameState *state){
   int drawntreasure = 0;
+  int z = 0;
+  int temphand[MAX_HAND];
   while(drawntreasure<2){
     if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
       shuffle(currentPlayer, state);
     }
     drawCard(currentPlayer, state);
-    cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
+    int cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer]-1];//top card of hand is most recently drawn card.
     if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
       drawntreasure++;
     else{
@@ -668,7 +670,7 @@ int adventurerEffect(int currentPlayer, int handPos, struct gameState *state){
 
 int smithyEffect(int currentPlayer, int handPos, struct gameState *state){
   //+3 Cards
-  for (i = 0; i < 3; i++){
+  for (int i = 0; i < 3; i++){
     drawCard(currentPlayer, state);
   }
   //discard card from hand
@@ -688,15 +690,15 @@ int villageEffect(int currentPlayer, int handPos, struct gameState *state){
 
 int cutpurseEffect(int currentPlayer, int handPos, struct gameState *state){
   updateCoins(currentPlayer, state, 2);
-  for (i = 0; i < state->numPlayers; i++){
+  for (int i = 0; i < state->numPlayers; i++){
     if (i != currentPlayer){
-      for (j = 0; j < state->handCount[i]; j++){
+      for (int j = 0; j < state->handCount[i]; j++){
         if (state->hand[i][j] == copper){
           discardCard(j, i, state, 0);
           break;
         }
         if (j == state->handCount[i]){
-          for (k = 0; k < state->handCount[i]; k++){
+          for (int k = 0; k < state->handCount[i]; k++){
             if (DEBUG)
             printf("Player %d reveals card number %d\n", i, state->hand[i][k]);
           }
@@ -712,7 +714,7 @@ int cutpurseEffect(int currentPlayer, int handPos, struct gameState *state){
 int treasure_mapEffect(int currentPlayer, int handPos, struct gameState *state){
   //search hand for another treasure_map
   int index = -1;
-  for (i = 0; i < state->handCount[currentPlayer]; i++){
+  for (int i = 0; i < state->handCount[currentPlayer]; i++){
     if (state->hand[currentPlayer][i] == treasure_map && i != handPos){
       index = i;
       break;
@@ -724,7 +726,7 @@ int treasure_mapEffect(int currentPlayer, int handPos, struct gameState *state){
     discardCard(index, currentPlayer, state, 1);
 
     //gain 4 Gold cards
-    for (i = 0; i < 4; i++){
+    for (int i = 0; i < 4; i++){
       gainCard(gold, state, 1, currentPlayer);
     }
 
@@ -740,16 +742,16 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 {
   int i;
   int j;
-  int k;
+  //int k;
   int x;
-  int index;
+  //int index;
   int currentPlayer = whoseTurn(state);
   int nextPlayer = currentPlayer + 1;
 
   int tributeRevealedCards[2] = {-1, -1};
   int temphand[MAX_HAND];// moved above the if statement
-  int cardDrawn;
-  int z = 0;// this is the counter for the temp hand
+  //int cardDrawn;
+  //int z = 0;// this is the counter for the temp hand
   if (nextPlayer > (state->numPlayers - 1)){
     nextPlayer = 0;
   }
@@ -1222,7 +1224,8 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
 
     case treasure_map:
       return treasure_mapEffect(currentPlayer, handPos, state);
-}
+    }
+  }
 
 int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
 {
@@ -1328,6 +1331,7 @@ int updateCoins(int player, struct gameState *state, int bonus)
 
   return 0;
 }
+
 
 
 //end of dominion.c
