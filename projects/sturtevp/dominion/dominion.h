@@ -128,4 +128,19 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
 
+int playAdventurerCard(struct gameState* state);
+/* Refactoring Adventure card to be used outside swtich statement. */
+
+int playSmithyCard(struct gameState* state, int handPos);
+/* Refactoring Smithy card to be used outside swtich statement.*/
+
+int playMinionCard(struct gameState* state, int handPos, int choice1, int choice2);
+/* Refactoring Minion card to be used outside swtich statement.*/
+
+int playEmbargoCard(struct gameState* state, int handPos, int choice1);
+/* Refactoring Embargo card to be used outside swtich statement.*/
+
+int playSeaHagCard(struct gameState* state);
+/* Refactoring Sea Hag card to be used outside swtich statement.*/
+
 #endif
