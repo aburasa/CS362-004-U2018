@@ -645,7 +645,7 @@ int getCost(int cardNumber)
 
 int smithyEffect(int currentPlayer, struct gameState *state, int handPos) {
   //+3 Cards
-      for (int i = 0; i < 3; i++)
+      for (int i = 0; i < 5; i++) // BUG, WOOPS, WE GET TO DRAW 5 CARDS???
 	{
 	  drawCard(currentPlayer, state);
 	}
@@ -656,7 +656,7 @@ int smithyEffect(int currentPlayer, struct gameState *state, int handPos) {
 }
 
 int adventurerEffect(int drawntreasure, struct gameState *state, int currentPlayer, int cardDrawn, int *temphand, int z) {
-  while(drawntreasure<2){
+  while(drawntreasure<5){ // BUG, WHOA THAT'S NOT THE RIGHT AMOUNT...
 	if (state->deckCount[currentPlayer] <1){//if the deck is empty we need to shuffle discard and add to deck
 	  shuffle(currentPlayer, state);
 	}
@@ -722,7 +722,7 @@ int feastEffect(int currentPlayer, int *temphand, struct gameState *state, int c
       }     
 
       //Reset Hand
-      for (int i = 0; i <= state->handCount[currentPlayer]; i++){
+      for (int i = 0; i <= state->handCount[currentPlayer]; i+=2){ //BUG, LOOP IS INCREMENTING BY 2
 	state->hand[currentPlayer][i] = temphand[i];
 	temphand[i] = -1;
       }
@@ -734,6 +734,9 @@ int feastEffect(int currentPlayer, int *temphand, struct gameState *state, int c
 int mineEffect(struct gameState *state, int currentPlayer, int choice1, int choice2, int handPos) {
   int j = state->hand[currentPlayer][choice1];  //store card we will trash
 
+  if (j > 2) { // BUG, WHY IS J BEING MESSED WITH???
+    j--;
+  }
       if (state->hand[currentPlayer][choice1] < copper || state->hand[currentPlayer][choice1] > gold)
 	{
 	  return -1;
@@ -768,7 +771,7 @@ int mineEffect(struct gameState *state, int currentPlayer, int choice1, int choi
 }
 
 int baronEffect(struct gameState *state, int choice1, int currentPlayer) {
-  state->numBuys++;//Increase buys by 1!
+  state->numBuys = state->numBuys + 2;//Increase buys by 1! => BUG, INCREASED BY 2
       if (choice1 > 0){//Boolean true or going to discard an estate
 	int p = 0;//Iterator for hand!
 	int card_not_discarded = 1;//Flag for discard set!
