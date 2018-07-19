@@ -17,7 +17,7 @@ bool assertTrue(bool expr, char* description) {
 	}
 }
 
-bool testBuyCard() {
+void testBuyCard() {
 	printf("\n--- TESTING buyCard() ---\n");
 	
 	int seed = 1000;
