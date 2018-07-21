@@ -51,33 +51,33 @@ void testUpdateCoins() {
 	// Check that coins are 0 when no treasures in hand
 	setTreasuresInHand(0, 0, 0, &G, G.whoseTurn);
 	updateCoins(G.whoseTurn, &G, 0);
-	assertTrue(G->coins == 0, "Coins are 0 when no treasures in hand");
+	assertTrue(G.coins == 0, "Coins are 0 when no treasures in hand");
 
 	// Check that bonus is applied
 	setTreasuresInHand(0, 0, 0, &G, G.whoseTurn);
 	updateCoins(G.whoseTurn, &G, 3);
-	assertTrue(G->coins == 3, "Coins are increased by bonus");
+	assertTrue(G.coins == 3, "Coins are increased by bonus");
 
 	// Check that coins are 1 when only one copper in hand
 	setTreasuresInHand(1, 0, 0, &G, G.whoseTurn);
 	updateCoins(G.whoseTurn, &G, 0);
-	assertTrue(G->coins == 1, "Coins are 1 when only one copper in hand");
+	assertTrue(G.coins == 1, "Coins are 1 when only one copper in hand");
 
 	// Check that coins are 2 when only one silver in hand
 	setTreasuresInHand(0, 1, 0, &G, G.whoseTurn);
 	updateCoins(G.whoseTurn, &G, 0);
-	assertTrue(G->coins == 2, "Coins are 2 when only one silver in hand");
+	assertTrue(G.coins == 2, "Coins are 2 when only one silver in hand");
 
 	// Check that coins are 3 when only one gold in hand
 	setTreasuresInHand(0, 0, 1, &G, G.whoseTurn);
 	updateCoins(G.whoseTurn, &G, 0);
-	assertTrue(G->coins == 3, "Coins are 3 when only one gold in hand");
+	assertTrue(G.coins == 3, "Coins are 3 when only one gold in hand");
 
 	// Check that coins and bonus are properly combined
 	setTreasuresInHand(3, 3, 4, &G, G.whoseTurn);
 	updateCoins(G.whoseTurn, &G, 10);
 	int totalTreasure = 3 + (3 * 2) + (3 * 4) + 10;
-	assertTrue(G->coins == totalTreasure, "Coins and bonus are properly combined");
+	assertTrue(G.coins == totalTreasure, "Coins and bonus are properly combined");
 }
 
 int main() {
