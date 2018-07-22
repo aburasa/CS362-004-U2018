@@ -70,9 +70,15 @@ void testme()
        && s[4] == 't' && s[5] == '\0'
        && state == 9)
     {
+      // free allocated memory
+      free(s);
+
       printf("error ");
       exit(200);
     }
+
+    // free allocated memory
+    free(s);
   }
 }
 
