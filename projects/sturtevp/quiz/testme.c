@@ -5,14 +5,42 @@
 
 char inputChar()
 {
-    // TODO: rewrite this function
-    return ' ';
+    int randChar = rand() % 256;
+    
+    while (randChar != 32 && randChar != 123
+          && randChar != 40 && randChar != 41
+          && randChar != 91 && randChar != 93
+          && randChar != 97 && randChar != 120
+          && randChar != 125 && randChar != 255
+          && randChar != 0)
+    {
+       randChar = rand() % 256;
+    }
+
+    return (char)randChar;
 }
 
 char *inputString()
 {
-    // TODO: rewrite this function
-    return "";
+    int randChar = rand() % 128;
+    int currChars = 0;
+    int numChars = 6;
+
+    char* randStr = malloc(numChars * sizeof(char));
+
+    while (currChars < numChars)
+    {
+       if (randChar == 114 || randChar == 101
+           || randChar == 115 || randChar == 116
+           || randChar == 0)
+       {
+          randStr[currChars] = randChar;
+          currChars++;
+       }
+       randChar = rand() % 128;
+    }
+
+    return randStr;
 }
 
 void testme()
