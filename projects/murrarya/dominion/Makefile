@@ -30,14 +30,14 @@ runtests: testDrawCard
 	cat dominion.c.gcov >> unittestresult.out
 
 unittestresults: dominion.o rngs.o unittest1.c unittest2.c unittest3.c unittest4.c cardtest1.c cardtest2.c cardtest3.c cardtest4.c
-	gcc -g -lm -fprofile-arcs -ftestcoverage unittest1.c -o unittest1
-	gcc -g -lm -fprofile-arcs -ftestcoverage unittest2.c -o unittest2
-	gcc -g -lm -fprofile-arcs -ftestcoverage unittest3.c -o unittest3
-	gcc -g -lm -fprofile-arcs -ftestcoverage unittest4.c -o unittest4
-	gcc -g -lm -fprofile-arcs -ftestcoverage cardtest1.c -o cardtest1
-	gcc -g -lm -fprofile-arcs -ftestcoverage cardtest2.c -o cardtest2
-	gcc -g -lm -fprofile-arcs -ftestcoverage cardtest3.c -o cardtest3
-	gcc -g -lm -fprofile-arcs -ftestcoverage cardtest4.c -o cardtest4
+	gcc -g -lm -fprofile-arcs -ftest-coverage unittest1.c dominion.o rngs.o -o unittest1
+	gcc -g -lm -fprofile-arcs -ftest-coverage unittest2.c dominion.o rngs.o -o unittest2
+	gcc -g -lm -fprofile-arcs -ftest-coverage unittest3.c dominion.o rngs.o -o unittest3
+	gcc -g -lm -fprofile-arcs -ftest-coverage unittest4.c dominion.o rngs.o -o unittest4
+	gcc -g -lm -fprofile-arcs -ftest-coverage cardtest1.c dominion.o rngs.o -o cardtest1
+	gcc -g -lm -fprofile-arcs -ftest-coverage cardtest2.c dominion.o rngs.o -o cardtest2
+	gcc -g -lm -fprofile-arcs -ftest-coverage cardtest3.c dominion.o rngs.o -o cardtest3
+	gcc -g -lm -fprofile-arcs -ftest-coverage cardtest4.c dominion.o rngs.o -o cardtest4
 	./unittest1 > unittestresults.out
 	gcov unittest1 >> unittestresults.out
 	./unittest2 >> unittestresults.out

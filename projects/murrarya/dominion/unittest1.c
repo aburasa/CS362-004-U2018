@@ -11,9 +11,9 @@ typedef enum {false, true} bool;
 bool assertTrue(bool expr, char* description) {
 	printf("%s - ", description);
 	if (expr) {
-		printf("[32mPASSED[0m\n");
+		printf("\x1B[32mPASSED\x1B[0m\n");
 	} else {
-		printf("[31mFAILED[0m\n");
+		printf("\x1B[31mFAILED\x1B[0m\n");
 	}
 }
 
