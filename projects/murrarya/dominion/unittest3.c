@@ -6,14 +6,14 @@
 
 #define VERBOSE 1
 
-enum bool{false, true};
+typedef enum {false, true} bool;
 
 bool assertTrue(bool expr, char* description) {
 	printf("%s - ", description);
 	if (expr) {
 		printf("PASSED\n");
 	} else {
-		printf("FAILED\n")
+		printf("FAILED\n");
 	}
 }
 
