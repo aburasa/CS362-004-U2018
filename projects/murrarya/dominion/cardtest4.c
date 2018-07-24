@@ -18,18 +18,18 @@ bool assertTrue(bool expr, char* description) {
 }
 
 void testCouncilRoom() {
-	memset(&G, 23, sizeof(struct gameState)); // clear gameState
-	initializeGame(numPlayers, k, seed, &G); // init a new game
-	printf("\n--- TESTING COUNCIL ROOOM CARD ---\n");
-	
 	int seed = 1000;
 	int numPlayers = 2;
 	int maxBonus = 10;
 	struct gameState G;
 	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel,
 				 smithy, village, baron, great_hall};
-	int result;
 
+	memset(&G, 23, sizeof(struct gameState)); // clear gameState
+	initializeGame(numPlayers, k, seed, &G); // init a new game
+	printf("\n--- TESTING COUNCIL ROOOM CARD ---\n");
+
+	int result;
 	int preP1HandCount = G.handCount[0];
 	int preP2HandCount = G.handCount[1];
 	int preNumBuys = G.numBuys;

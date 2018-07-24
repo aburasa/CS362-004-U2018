@@ -1,5 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h> #include <stdlib.h>
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
@@ -30,7 +29,7 @@ void testSmithy() {
 	
 	memset(&G, 23, sizeof(struct gameState)); // clear gameState
 	initializeGame(numPlayers, k, seed, &G); // init a new game
-	G.hand[0] = smithy; // insert smithy card into hand
+	G.hand[G.whoseTurn][0] = smithy; // insert smithy card into hand
 
 	int preHandCount = G.handCount[G.whoseTurn];
 	int preDeckCount = G.deckCount[G.whoseTurn];

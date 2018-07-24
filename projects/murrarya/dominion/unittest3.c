@@ -58,14 +58,14 @@ void testGainCard() {
 	int result = gainCard(smithy, &G, 1, G.whoseTurn);
 	assertTrue(result == -1, "gainCard() exits with error status if card supply is empty");
 	assertTrue(G.supplyCount[smithy] == 0, "Card's supply is not decremented if pile is empty");
-	assertTrue(G.handCount = preHandCount, "Card is not added to hand if supply pile is empty");
+	assertTrue(G.handCount[G.whoseTurn] == preHandCount, "Card is not added to hand if supply pile is empty");
 
 	// Check that card cannot be gained if it isn't in the game
 	G.supplyCount[embargo] = -1; // Should be unnecessary but just to be safe...
 	result = gainCard(embargo, &G, 1, G.whoseTurn);
 	assertTrue(result == -1, "gainCard() exits with error status if card not in game");
 	assertTrue(G.supplyCount[smithy] == -1, "Card's supply is not decremented if card not in game");
-	assertTrue(G.handCount = preHandCount, "Card is not added to hand if card not in game");
+	assertTrue(G.handCount[G.whoseTurn] == preHandCount, "Card is not added to hand if card not in game");
 }
 
 int main() {

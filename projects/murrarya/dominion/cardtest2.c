@@ -31,12 +31,12 @@ void testAdventurer() {
 	memset(&G, 23, sizeof(struct gameState)); // clear gameState
 	initializeGame(numPlayers, k, seed, &G); // init a new game
 	
-	int preHandCount = G.handCount;
-	int preDiscardCount = G.discardCount;
-	int preDeckCount = G.deckCount;
+	int preHandCount = G.handCount[G.whoseTurn];
+	int preDiscardCount = G.discardCount[G.whoseTurn];
+	int preDeckCount = G.deckCount[G.whoseTurn];
 	int preTreasuresInHand = 0;
-	for (int i = 0; i < G.handCount; i++) {
-		CARD curCard = G.hand[G.whoseTurn][i];
+	for (int i = 0; i < G.handCount[G.whoseTurn]; i++) {
+		int curCard = G.hand[G.whoseTurn][i];
 		if (curCard == copper || curCard == silver || curCard == gold) {
 			preTreasuresInHand++;
 		}
@@ -49,12 +49,12 @@ void testAdventurer() {
 	// and deck pile decreased by the number of other cards 
 	// drawn and then discarded.
 
-	int postHandCount = G.handCount;
-	int postDiscardCount = G.discardCount;
-	int postDeckCount = G.deckCount;
+	int postHandCount = G.handCount[G.whoseTurn];
+	int postDiscardCount = G.discardCount[G.whoseTurn];
+	int postDeckCount = G.deckCount[G.whoseTurn];
 	int postTreasuresInHand = 0;
-	for (int i = 0; i < G.handCount; i++) {
-		CARD curCard = G.hand[G.whoseTurn][i];
+	for (int i = 0; i < G.handCount[G.whoseTurn]; i++) {
+		int curCard = G.hand[G.whoseTurn][i];
 		if (curCard == copper || curCard == silver || curCard == gold) {
 			postTreasuresInHand++;
 		}

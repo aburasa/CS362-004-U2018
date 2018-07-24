@@ -57,3 +57,8 @@ void testIsGameOver() {
 	gameOver = isGameOver(&G);
 	assertTrue(gameOver, "Game ends if three supply piles are gone");
 }	
+
+int main() {
+  testIsGameOver();
+  return 0;
+}
