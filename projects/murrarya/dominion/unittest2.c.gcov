@@ -1,0 +1,129 @@
+        -:    0:Source:unittest2.c
+        -:    0:Graph:unittest2.gcno
+        -:    0:Data:unittest2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdio.h>
+        -:    2:#include <stdlib.h>
+        -:    3:#include "dominion.h"
+        -:    4:#include "dominion_helpers.h"
+        -:    5:#include "rngs.h"
+        -:    6:
+        -:    7:#define VERBOSE 1
+        -:    8:
+        -:    9:typedef enum {false, true} bool;
+        -:   10:
+function assertTrue called 6 returned 100% blocks executed 100%
+        6:   11:bool assertTrue(bool expr, char* description) {
+        6:   12:	printf("%s - ", description);
+call    0 returned 100%
+        6:   13:	if (expr) {
+branch  0 taken 83% (fallthrough)
+branch  1 taken 17%
+        5:   14:		printf("\x1B[32mPASSED\x1B[0m\n");
+call    0 returned 100%
+        -:   15:	} else {
+        1:   16:		printf("\x1B[31mFAILED\x1B[0m\n");
+call    0 returned 100%
+        -:   17:	}
+        6:   18:}
+        -:   19:
+function setTreasuresInHand called 6 returned 100% blocks executed 100%
+        6:   20:void setTreasuresInHand(int numCopper, int numSilver, int numGold, struct gameState* G, int player) {
+       36:   21:	for (int i = 0; i < G->handCount[player]; i++) {
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+       30:   22:		if (numCopper) {
+branch  0 taken 13% (fallthrough)
+branch  1 taken 87%
+        4:   23:			G->hand[player][i] = copper;
+        4:   24:			numCopper--;
+       26:   25:		} else if (numSilver) {
+branch  0 taken 12% (fallthrough)
+branch  1 taken 88%
+        3:   26:			G->hand[player][i] = silver;
+        3:   27:			numSilver--;
+       23:   28:		} else if (numGold) {
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+        1:   29:			G->hand[player][i] = gold;
+        1:   30:			numGold--;
+        -:   31:		} else {
+       22:   32:			G->hand[player][i] = feast; // Any non-treasure card will work
+        -:   33:		}
+        -:   34:	}
+        6:   35:}
+        -:   36:
+function testUpdateCoins called 1 returned 100% blocks executed 100%
+        1:   37:void testUpdateCoins() {
+        1:   38:	printf("\n--- TESTING updateCoins() ---\n");
+call    0 returned 100%
+        -:   39:	
+        1:   40:	int seed = 1000;
+        1:   41:	int numPlayers = 2;
+        1:   42:	int maxBonus = 10;
+        -:   43:	struct gameState G;
+        1:   44:	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel,
+        -:   45:				 smithy, village, baron, great_hall};
+        -:   46:
+        -:   47:	
+        1:   48:	memset(&G, 23, sizeof(struct gameState)); // clear gameState
+        1:   49:	initializeGame(numPlayers, k, seed, &G); // init a new game
+call    0 returned 100%
+        -:   50:
+        -:   51:	// Check that coins are 0 when no treasures in hand
+        1:   52:	setTreasuresInHand(0, 0, 0, &G, G.whoseTurn);
+call    0 returned 100%
+        1:   53:	updateCoins(G.whoseTurn, &G, 0);
+call    0 returned 100%
+        1:   54:	assertTrue(G.coins == 0, "Coins are 0 when no treasures in hand");
+call    0 returned 100%
+        -:   55:
+        -:   56:	// Check that bonus is applied
+        1:   57:	setTreasuresInHand(0, 0, 0, &G, G.whoseTurn);
+call    0 returned 100%
+        1:   58:	updateCoins(G.whoseTurn, &G, 3);
+call    0 returned 100%
+        1:   59:	assertTrue(G.coins == 3, "Coins are increased by bonus");
+call    0 returned 100%
+        -:   60:
+        -:   61:	// Check that coins are 1 when only one copper in hand
+        1:   62:	setTreasuresInHand(1, 0, 0, &G, G.whoseTurn);
+call    0 returned 100%
+        1:   63:	updateCoins(G.whoseTurn, &G, 0);
+call    0 returned 100%
+        1:   64:	assertTrue(G.coins == 1, "Coins are 1 when only one copper in hand");
+call    0 returned 100%
+        -:   65:
+        -:   66:	// Check that coins are 2 when only one silver in hand
+        1:   67:	setTreasuresInHand(0, 1, 0, &G, G.whoseTurn);
+call    0 returned 100%
+        1:   68:	updateCoins(G.whoseTurn, &G, 0);
+call    0 returned 100%
+        1:   69:	assertTrue(G.coins == 2, "Coins are 2 when only one silver in hand");
+call    0 returned 100%
+        -:   70:
+        -:   71:	// Check that coins are 3 when only one gold in hand
+        1:   72:	setTreasuresInHand(0, 0, 1, &G, G.whoseTurn);
+call    0 returned 100%
+        1:   73:	updateCoins(G.whoseTurn, &G, 0);
+call    0 returned 100%
+        1:   74:	assertTrue(G.coins == 3, "Coins are 3 when only one gold in hand");
+call    0 returned 100%
+        -:   75:
+        -:   76:	// Check that coins and bonus are properly combined
+        1:   77:	setTreasuresInHand(3, 3, 4, &G, G.whoseTurn);
+call    0 returned 100%
+        1:   78:	updateCoins(G.whoseTurn, &G, 10);
+call    0 returned 100%
+        1:   79:	int totalTreasure = 3 + (3 * 2) + (3 * 4) + 10;
+        1:   80:	assertTrue(G.coins == totalTreasure, "Coins and bonus are properly combined");
+call    0 returned 100%
+        1:   81:}
+        -:   82:
+function main called 1 returned 100% blocks executed 100%
+        1:   83:int main() {
+        1:   84:	testUpdateCoins();
+call    0 returned 100%
+        1:   85:	return 0;
+        -:   86:}

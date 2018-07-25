@@ -56,6 +56,16 @@ void testIsGameOver() {
 	G.supplyCount[feast] = 0;
 	gameOver = isGameOver(&G);
 	assertTrue(gameOver, "Game ends if three supply piles are gone");
+
+    // Check that game ends if more than three supply piles are gone
+    G.supplyCount[gardens] = 0;
+    gameOver = isGameOver(&G);
+    assertTrue(gameOver, "Game ends if more than three supply piles are gone");
+
+    // Check that games ends if all conditions are met
+    G.supplyCount[province] = 0;
+    gameOver = isGameOver(&G);
+    assertTrue(gameOver, "Game ends if all conditions are met");
 }	
 
 int main() {

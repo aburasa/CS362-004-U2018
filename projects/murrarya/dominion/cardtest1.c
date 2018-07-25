@@ -34,7 +34,7 @@ void testSmithy() {
 	int preHandCount = G.handCount[G.whoseTurn];
 	int preDeckCount = G.deckCount[G.whoseTurn];
 	int prePlayedCount = G.playedCardCount;
-	cardEffect(smithy, 0, 0, 0, &G, 0, 0); // play smithy
+	cardEffect(smithy, 0, 0, 0, &G, 6, 0); // play smithy
 	// new hand count = preHandCount + 3 - 1
 	assertTrue(G.handCount[G.whoseTurn] == preHandCount + 2, "Three cards are drawn and one discarded");
 	assertTrue(G.deckCount[G.whoseTurn] == preDeckCount - 3, "Three cards are drawn from deck");

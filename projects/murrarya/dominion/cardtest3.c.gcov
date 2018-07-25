@@ -1,0 +1,155 @@
+        -:    0:Source:cardtest3.c
+        -:    0:Graph:cardtest3.gcno
+        -:    0:Data:cardtest3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdio.h>
+        -:    2:#include <stdlib.h>
+        -:    3:#include "dominion.h"
+        -:    4:#include "dominion_helpers.h"
+        -:    5:#include "rngs.h"
+        -:    6:
+        -:    7:#define VERBOSE 1
+        -:    8:
+        -:    9:typedef enum {false, true} bool;
+        -:   10:
+function assertTrue called 17 returned 100% blocks executed 100%
+       17:   11:bool assertTrue(bool expr, char* description) {
+       17:   12:	printf("%s - ", description);
+call    0 returned 100%
+       17:   13:	if (expr) {
+branch  0 taken 47% (fallthrough)
+branch  1 taken 53%
+        8:   14:		printf("\x1B[32mPASSED\x1B[0m\n");
+call    0 returned 100%
+        -:   15:	} else {
+        9:   16:		printf("\x1B[31mFAILED\x1B[0m\n");
+call    0 returned 100%
+        -:   17:	}
+       17:   18:}
+        -:   19:
+function setHand called 9 returned 100% blocks executed 100%
+        9:   20:void setHand(struct gameState *G, int treasure) {
+        9:   21:	int seed = 1000;
+        9:   22:	int numPlayers = 2;
+        9:   23:	int maxBonus = 10;
+        9:   24:	int k[10] = {adventurer, council_room, feast, gardens, mine, remodel,
+        -:   25:				 smithy, village, baron, great_hall};
+        -:   26:
+        9:   27:	memset(G, 23, sizeof(struct gameState)); // clear gameState
+        9:   28:	initializeGame(numPlayers, k, seed, G); // init a new game
+call    0 returned 100%
+        -:   29:
+        9:   30:	G->hand[G->whoseTurn][0] = treasure;
+        9:   31:	G->hand[G->whoseTurn][1] = mine;
+        9:   32:}
+        -:   33:
+function testMine called 1 returned 100% blocks executed 100%
+        1:   34:void testMine() {
+        1:   35:	printf("\n--- TESTING MINE CARD ---\n");
+call    0 returned 100%
+        -:   36:	struct gameState G;
+        -:   37:	int result;
+        -:   38:
+        -:   39:	// Choice1 needs to be the treasure to trash
+        -:   40:	// Choice2 is the desired treasure to replace it with
+        -:   41:
+        -:   42:	// Test that mine fails if choice1 is not a treasure card
+        1:   43:	setHand(&G, smithy);
+call    0 returned 100%
+        1:   44:	result = cardEffect(mine, 0, silver, 0, &G, 1, 0);
+call    0 returned 100%
+        1:   45:	assertTrue(result < 0, "Mine fails if trashed card is not a treasure card");
+call    0 returned 100%
+        1:   46:	assertTrue(G.hand[G.whoseTurn][0] == smithy, "If mine fails no change is made to hand");
+call    0 returned 100%
+        -:   47:
+        -:   48:	// Test that mine fails if choice1 is not a valid card
+        1:   49:	setHand(&G, -1);
+call    0 returned 100%
+        1:   50:	result = cardEffect(mine, 0, silver, 0, &G, 1, 0);
+call    0 returned 100%
+        1:   51:	assertTrue(result < 0, "Mine fails if trashed card is not a valid card");
+call    0 returned 100%
+        -:   52:
+        -:   53:	// Test that mine fails if choice2 is not a treasure card
+        1:   54:	setHand(&G, copper);
+call    0 returned 100%
+        1:   55:	result = cardEffect(mine, 0, smithy, 0, &G, 1, 0);
+call    0 returned 100%
+        1:   56:	assertTrue(result < 0, "Mine fails if chosen card is not a treasure card");
+call    0 returned 100%
+        -:   57:
+        -:   58:	// Test that mine fails if choice2 is not a valid card
+        1:   59:	setHand(&G, copper);
+call    0 returned 100%
+        1:   60:	result = cardEffect(mine, 0, 500, 0, &G, 1, 0);
+call    0 returned 100%
+        1:   61:	assertTrue(result < 0, "Mine fails if chosen card is not a valid card");
+call    0 returned 100%
+        -:   62:
+        -:   63:	// Test that copper can be replaced with silver
+        1:   64:	setHand(&G, copper);
+call    0 returned 100%
+        1:   65:	int prePlayedCount = G.playedCardCount;
+        1:   66:	int preDeckSize = G.deckCount[G.whoseTurn];
+        1:   67:	result = cardEffect(mine, 0, silver, 0, &G, 1, 0);
+call    0 returned 100%
+        1:   68:	assertTrue(result == 0, "Mine succeeds if cards are valid treasure choices");
+call    0 returned 100%
+        1:   69:	assertTrue(G.hand[G.whoseTurn][0] == silver, "Copper can be replaced with silver");
+call    0 returned 100%
+        1:   70:	assertTrue(G.playedCardCount == prePlayedCount + 1, "Played card count increased by 1");
+call    0 returned 100%
+        1:   71:	assertTrue(G.playedCards[prePlayedCount] == copper, "Played card is discarded");
+call    0 returned 100%
+        1:   72:	assertTrue(G.deckCount[G.whoseTurn] == preDeckSize - 1, "Deck size decreased by one after success");
+call    0 returned 100%
+        -:   73:
+        -:   74:	// Test that copper cannot be replaced with gold
+        1:   75:	setHand(&G, copper);
+call    0 returned 100%
+        1:   76:	prePlayedCount = G.playedCardCount;
+        1:   77:	preDeckSize = G.deckCount[G.whoseTurn];
+        1:   78:	result = cardEffect(mine, 0, gold, 0, &G, 1, 0);
+call    0 returned 100%
+        1:   79:	assertTrue(result < 0, "Mine fails if replacement treasure worth more than 3 gold more than trashed treausre");
+call    0 returned 100%
+        1:   80:	assertTrue(G.hand[G.whoseTurn][0] == copper, "Card is not trashed after failure");
+call    0 returned 100%
+        1:   81:	assertTrue(G.deckCount[G.whoseTurn] == preDeckSize, "Deck count not changed after failure");
+call    0 returned 100%
+        1:   82:	assertTrue(G.playedCardCount == prePlayedCount, "Trashed card count is not changed after failure");
+call    0 returned 100%
+        -:   83:
+        -:   84:	// Test that silver can be replaced with gold
+        1:   85:	setHand(&G, silver);
+call    0 returned 100%
+        1:   86:	result = cardEffect(mine, 0, gold, 0, &G, 1, 0);
+call    0 returned 100%
+        1:   87:	assertTrue(result == 0, "Silver can be replaced with gold");
+call    0 returned 100%
+        -:   88:
+        -:   89:	// Test that gold can be replaced with any treasure
+        1:   90:	setHand(&G, gold);
+call    0 returned 100%
+        1:   91:	result = cardEffect(mine, 0, gold, 0, &G, 1, 0);
+call    0 returned 100%
+        1:   92:	assertTrue(result == 0, "Treasures can be replaced by same treasure");
+call    0 returned 100%
+        -:   93:
+        -:   94:	// Test treasures can be replaced with a lower value treasure
+        1:   95:	setHand(&G, gold);
+call    0 returned 100%
+        1:   96:	result = cardEffect(mine, 0, copper, 0, &G, 1, 0);
+call    0 returned 100%
+        1:   97:	assertTrue(result == 0, "Treasures can be replaced with lower value treasures");
+call    0 returned 100%
+        1:   98:}
+        -:   99:
+function main called 1 returned 100% blocks executed 100%
+        1:  100:int main() {
+        1:  101:	testMine();
+call    0 returned 100%
+        1:  102:	return 0;
+        -:  103:}

@@ -39,21 +39,21 @@ unittestresults: dominion.o rngs.o unittest1.c unittest2.c unittest3.c unittest4
 	gcc --std=c99 -g -lm -fprofile-arcs -ftest-coverage cardtest3.c dominion.o rngs.o -o cardtest3
 	gcc --std=c99 -g -lm -fprofile-arcs -ftest-coverage cardtest4.c dominion.o rngs.o -o cardtest4
 	./unittest1 > unittestresults.out
-	gcov unittest1 >> unittestresults.out
+	gcov -b unittest1 >> unittestresults.out
 	./unittest2 >> unittestresults.out
-	gcov unittest2 >> unittestresults.out
+	gcov -b unittest2 >> unittestresults.out
 	./unittest3 >> unittestresults.out
-	gcov unittest3 >> unittestresults.out
+	gcov -b unittest3 >> unittestresults.out
 	./unittest4 >> unittestresults.out
-	gcov unittest4 >> unittestresults.out
+	gcov -b unittest4 >> unittestresults.out
 	./cardtest1 >> unittestresults.out
-	gcov cardtest1 >> unittestresults.out
+	gcov -b cardtest1 >> unittestresults.out
 	./cardtest2 >> unittestresults.out
-	gcov cardtest2 >> unittestresults.out
+	gcov -b cardtest2 >> unittestresults.out
 	./cardtest3 >> unittestresults.out
-	gcov cardtest3 >> unittestresults.out
+	gcov -b cardtest3 >> unittestresults.out
 	./cardtest4 >> unittestresults.out
-	gcov cardtest4 >> unittestresults.out
+	gcov -b cardtest4 >> unittestresults.out
 
 
 player: player.c interface.o
