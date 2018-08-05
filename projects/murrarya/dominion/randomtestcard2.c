@@ -91,7 +91,6 @@ void randomTestSmithy() {
     printf("\n--- TESTING SMITHY CARD ---\n");
     bool allTestsPassed = true;
     for (int i = 0; i < 2000; i++) {
-        int maxBonus = 10;
         struct gameState G;
         memset(&G, 23, sizeof(struct gameState));
         randomlyGenerateGameState(&G);
@@ -121,6 +120,6 @@ void randomTestSmithy() {
 int main() {
     PutSeed(-1);
     srand(time(0));
-    randomTestAdventurer();
+    randomTestSmithy();
     return 0;
 }

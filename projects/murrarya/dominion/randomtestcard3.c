@@ -110,11 +110,11 @@ void randomTestCouncilRoom() {
 
         result = cardEffect(council_room, 0, 0, 0, &G, crPos, 0);
         assertTrue(result, 0, "Council room succeeds when played");
-        assertTrue(G.handCount[0], preP1HandCount + 4, "Player who played card gains 4 cards");
+        assertTrue(G.handCount[G.whoseTurn], playerPreHandCounts[G.whoseTurn] + 4, "Player who played card gains 4 cards");
         assertTrue(G.numBuys, preNumBuys + 1, "Player who played card gets 1 more buy");
 
         // Test if all other players drew one card
-        bool allPlayersDrewACard = true;
+        bool allOtherPlayersDrewACard = true;
         for (int p = 0; p < G.numPlayers; p++) {
             if (p == G.whoseTurn) {
                 // Only interested in players who aren't the one who played the card
@@ -122,7 +122,7 @@ void randomTestCouncilRoom() {
             }
             allOtherPlayersDrewACard &= G.handCount[p] == playerPreHandCounts[p] + 1;
         }
-        assertTrue(allPlayersDrewACard, true, "All other players draw 1 card");
+        assertTrue(allOtherPlayersDrewACard, true, "All other players draw 1 card");
         assertTrue(G.playedCardCount, prePlayedCount + 1, "Council room is put in played pile after being played");
     }
     
