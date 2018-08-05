@@ -1,3 +1,25 @@
+ Testing Adventurer card
+====================
+ RANDOM TESTS
+==========================
+
+ RESULTS
+===============
+TESTS PASSED: 19999
+TESTS FAILED: 1
+Num times drawCard function calls failed: 0
+Num times cardEffect function calls failed: 0
+shuffle failed: 0
+Treasure count mismatch: 0
+Hand and deck count mismatch: 1
+ ADVENTURER RANDOM TESTS FAILED: 1
+File 'dominion.c'
+Lines executed:17.68% of 560
+Branches executed:15.66% of 415
+Taken at least once:9.88% of 415
+Calls executed:13.83% of 94
+Creating 'dominion.c.gcov'
+
         -:    0:Source:dominion.c
         -:    0:Graph:dominion.gcno
         -:    0:Data:dominion.gcda
