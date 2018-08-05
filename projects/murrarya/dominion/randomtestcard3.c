@@ -11,11 +11,11 @@ typedef enum {false, true} bool;
 
 bool assertTrue(int var1, int var2, char* description) {
     bool expr = var1 == var2;
-	if (!expr) {
-		printf("%s - ", description);
-		printf("\x1B[31mFAILED\x1B[0m\n");
+    if (!expr) {
+        printf("%s - ", description);
+        printf("\x1B[31mFAILED\x1B[0m\n");
         printf("Expected %d but got %d\n", var1, var2);
-	}
+    }
 
     return expr;
 }
@@ -28,27 +28,6 @@ void randomlyGenerateGameState(struct gameState* G) {
 	}
     G->numPlayers = numPlayers;
 	
-	// Randomly choose the set of kingdom cards
-    // Shuffle deck and first 10 types are the kingdom cards
-    /*
-    int numKingCards = treasure_map - adventurer;
-	int randomCards[numKingCards];
-    for (int i = 0; i < numKingCards; i++) {
-        randomCards[i] = i + adventurer;
-    }
-	for (int i = 0; i < numKingCards; i++) {
-		int randIdx = rand() % (treasure_map + 1 - i) + i;
-		int tmp = randomCards[randIdx];
-		randomCards[randIdx] = randomCards[i];
-		randomCards[i] = tmp;
-	}
-    */
-    /*
-	int kingdomCards[10];
-	for (int i = 0; i < 10; i++) {
-		kingdomCards[i] = randomCards[i];
-	}
-    */
     for (int i = adventurer; i <= treasure_map; i++) {
         G->supplyCount[i] = floor(Random() * 10);
     }
@@ -106,58 +85,47 @@ void randomlyGenerateGameState(struct gameState* G) {
     for (int p = 0; p < numPlayers; p++) {
         updateCoins(p, G, 0);
     }
-
-//	initializeGame(numPlayers, kingdomCards, rand(), G);
 }
 
-void randomTestAdventurer() {
-    printf("\n--- TESTING ADVENTURER CARD ---\n");
+void randomTestCouncilRoom() {
+    printf("\n--- TESTING COUNCIL ROOM CARD ---\n");
     bool allTestsPassed = true;
-	for (int i = 0; i < 2000; i++) {
-		struct gameState G;
+    for (int i = 0; i < 2000; i++) {
+        struct gameState G;
         memset(&G, 23, sizeof(struct gameState));
-		randomlyGenerateGameState(&G);
+        randomlyGenerateGameState(&G);
+        int result;
 
-        int advPos = floor(Random() * G.handCount[G.whoseTurn]);
-        G.hand[G.whoseTurn][advPos] = adventurer;
+        int crPos = floor(Random() * G.handCount[G.whoseTurn]);
+        G.hand[G.whoseTurn][crPos] = council_room;
         updateCoins(G.whoseTurn, &G, 0);
 
-        int preHandCount = G.handCount[G.whoseTurn];
-        int preDiscardCount = G.discardCount[G.whoseTurn];
-        int preDeckCount = G.deckCount[G.whoseTurn];
-        int preTreasuresInHand = 0;
-        for (int i = 0; i < G.handCount[G.whoseTurn]; i++) {
-            int curCard = G.hand[G.whoseTurn][i];
-            if (curCard == copper || curCard == silver || curCard == gold) {
-                preTreasuresInHand++;
-            }
+        int playerPreHandCounts[MAX_PLAYERS] = {0, 0, 0, 0};
+        for (int p = 0; p < G.numPlayers; p++) {
+            playerPreHandCounts[p] = G.handCount[p];
         }
+        int preNumBuys = G.numBuys;
+        int prePlayedCount = G.playedCardCount;
+        G.hand[G.whoseTurn][0] = council_room;
 
-		cardEffect(adventurer, 0, 0, 0, &G, advPos, 0); // play Adventurer
-		// Effect of adventurer is to draw cards until 2 treasures
-		// are found. Thus, hand size should be increased by 2,
-		// teasure count increased by 2, and discard pile increased
-		// and deck pile decreased by the number of other cards 
-		// drawn and then discarded.
+        result = cardEffect(council_room, 0, 0, 0, &G, crPos, 0);
+        assertTrue(result, 0, "Council room succeeds when played");
+        assertTrue(G.handCount[0], preP1HandCount + 4, "Player who played card gains 4 cards");
+        assertTrue(G.numBuys, preNumBuys + 1, "Player who played card gets 1 more buy");
 
-		int postHandCount = G.handCount[G.whoseTurn];
-		int postDiscardCount = G.discardCount[G.whoseTurn];
-		int postDeckCount = G.deckCount[G.whoseTurn];
-		int postTreasuresInHand = 0;
-		for (int i = 0; i < G.handCount[G.whoseTurn]; i++) {
-			int curCard = G.hand[G.whoseTurn][i];
-			if (curCard == copper || curCard == silver || curCard == gold) {
-				postTreasuresInHand++;
-			}
-		}
-		int numCardsDrawn = preDeckCount - postDeckCount;
-
-        printf("\n---Iteration %d---\n", i);
-		allTestsPassed &= assertTrue(postHandCount, preHandCount + 2, "Hand count inc'd by 2");
-		allTestsPassed &= assertTrue(postTreasuresInHand - preTreasuresInHand, 2, "2 treasures drawn");
-		allTestsPassed &= assertTrue(postDiscardCount - preDiscardCount, numCardsDrawn - 2, "All other cards put in discard pile");
-	}
-
+        // Test if all other players drew one card
+        bool allPlayersDrewACard = true;
+        for (int p = 0; p < G.numPlayers; p++) {
+            if (p == G.whoseTurn) {
+                // Only interested in players who aren't the one who played the card
+                continue;
+            }
+            allOtherPlayersDrewACard &= G.handCount[p] == playerPreHandCounts[p] + 1;
+        }
+        assertTrue(allPlayersDrewACard, true, "All other players draw 1 card");
+        assertTrue(G.playedCardCount, prePlayedCount + 1, "Council room is put in played pile after being played");
+    }
+    
     if (allTestsPassed) {
         printf("\x1B[32mALL TESTS PASSED\x1B[0m\n");
     } else {
@@ -167,7 +135,7 @@ void randomTestAdventurer() {
 
 int main() {
     PutSeed(-1);
-	srand(time(0));
-	randomTestAdventurer();
-	return 0;
+    srand(time(0));
+    randomTestCouncilRoom();
+    return 0;
 }

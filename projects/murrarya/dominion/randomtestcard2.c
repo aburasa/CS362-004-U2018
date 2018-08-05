@@ -11,11 +11,11 @@ typedef enum {false, true} bool;
 
 bool assertTrue(int var1, int var2, char* description) {
     bool expr = var1 == var2;
-	if (!expr) {
-		printf("%s - ", description);
-		printf("\x1B[31mFAILED\x1B[0m\n");
+    if (!expr) {
+        printf("%s - ", description);
+        printf("\x1B[31mFAILED\x1B[0m\n");
         printf("Expected %d but got %d\n", var1, var2);
-	}
+    }
 
     return expr;
 }
@@ -28,27 +28,6 @@ void randomlyGenerateGameState(struct gameState* G) {
 	}
     G->numPlayers = numPlayers;
 	
-	// Randomly choose the set of kingdom cards
-    // Shuffle deck and first 10 types are the kingdom cards
-    /*
-    int numKingCards = treasure_map - adventurer;
-	int randomCards[numKingCards];
-    for (int i = 0; i < numKingCards; i++) {
-        randomCards[i] = i + adventurer;
-    }
-	for (int i = 0; i < numKingCards; i++) {
-		int randIdx = rand() % (treasure_map + 1 - i) + i;
-		int tmp = randomCards[randIdx];
-		randomCards[randIdx] = randomCards[i];
-		randomCards[i] = tmp;
-	}
-    */
-    /*
-	int kingdomCards[10];
-	for (int i = 0; i < 10; i++) {
-		kingdomCards[i] = randomCards[i];
-	}
-    */
     for (int i = adventurer; i <= treasure_map; i++) {
         G->supplyCount[i] = floor(Random() * 10);
     }
@@ -106,57 +85,31 @@ void randomlyGenerateGameState(struct gameState* G) {
     for (int p = 0; p < numPlayers; p++) {
         updateCoins(p, G, 0);
     }
-
-//	initializeGame(numPlayers, kingdomCards, rand(), G);
 }
 
-void randomTestAdventurer() {
-    printf("\n--- TESTING ADVENTURER CARD ---\n");
+void randomTestSmithy() {
+    printf("\n--- TESTING SMITHY CARD ---\n");
     bool allTestsPassed = true;
-	for (int i = 0; i < 2000; i++) {
-		struct gameState G;
+    for (int i = 0; i < 2000; i++) {
+        int maxBonus = 10;
+        struct gameState G;
         memset(&G, 23, sizeof(struct gameState));
-		randomlyGenerateGameState(&G);
-
-        int advPos = floor(Random() * G.handCount[G.whoseTurn]);
-        G.hand[G.whoseTurn][advPos] = adventurer;
+        randomlyGenerateGameState(&G);
+        int smithyPos = floor(Random() * G.handCount[G.whoseTurn]);
+        G.hand[G.whoseTurn][smithyPos] = smithy;
         updateCoins(G.whoseTurn, &G, 0);
 
         int preHandCount = G.handCount[G.whoseTurn];
-        int preDiscardCount = G.discardCount[G.whoseTurn];
         int preDeckCount = G.deckCount[G.whoseTurn];
-        int preTreasuresInHand = 0;
-        for (int i = 0; i < G.handCount[G.whoseTurn]; i++) {
-            int curCard = G.hand[G.whoseTurn][i];
-            if (curCard == copper || curCard == silver || curCard == gold) {
-                preTreasuresInHand++;
-            }
-        }
-
-		cardEffect(adventurer, 0, 0, 0, &G, advPos, 0); // play Adventurer
-		// Effect of adventurer is to draw cards until 2 treasures
-		// are found. Thus, hand size should be increased by 2,
-		// teasure count increased by 2, and discard pile increased
-		// and deck pile decreased by the number of other cards 
-		// drawn and then discarded.
-
-		int postHandCount = G.handCount[G.whoseTurn];
-		int postDiscardCount = G.discardCount[G.whoseTurn];
-		int postDeckCount = G.deckCount[G.whoseTurn];
-		int postTreasuresInHand = 0;
-		for (int i = 0; i < G.handCount[G.whoseTurn]; i++) {
-			int curCard = G.hand[G.whoseTurn][i];
-			if (curCard == copper || curCard == silver || curCard == gold) {
-				postTreasuresInHand++;
-			}
-		}
-		int numCardsDrawn = preDeckCount - postDeckCount;
-
+        int prePlayedCount = G.playedCardCount;
+        cardEffect(smithy, 0, 0, 0, &G, smithyPos, 0);
+        // new hand count = preHandCount + 3 - 1
         printf("\n---Iteration %d---\n", i);
-		allTestsPassed &= assertTrue(postHandCount, preHandCount + 2, "Hand count inc'd by 2");
-		allTestsPassed &= assertTrue(postTreasuresInHand - preTreasuresInHand, 2, "2 treasures drawn");
-		allTestsPassed &= assertTrue(postDiscardCount - preDiscardCount, numCardsDrawn - 2, "All other cards put in discard pile");
-	}
+        assertTrue(G.handCount[G.whoseTurn], preHandCount + 2, "Three cards are drawn and one discarded");
+        assertTrue(G.deckCount[G.whoseTurn], preDeckCount - 3, "Three cards are drawn from deck");
+        assertTrue(G.playedCardCount, prePlayedCount + 1, "Played pile count incremented by one");
+        assertTrue(G.playedCards[prePlayedCount], smithy, "Smithy placed at top of played pile");
+    }
 
     if (allTestsPassed) {
         printf("\x1B[32mALL TESTS PASSED\x1B[0m\n");
@@ -167,7 +120,7 @@ void randomTestAdventurer() {
 
 int main() {
     PutSeed(-1);
-	srand(time(0));
-	randomTestAdventurer();
-	return 0;
+    srand(time(0));
+    randomTestAdventurer();
+    return 0;
 }
