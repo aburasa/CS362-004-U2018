@@ -1,0 +1,260 @@
+        -:    0:Source:randomtestcard1.c
+        -:    0:Graph:randomtestcard1.gcno
+        -:    0:Data:randomtestcard1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include <stdlib.h>
+        -:    2:#include <stdio.h>
+        -:    3:#include <assert.h>
+        -:    4:#include <time.h>
+        -:    5:#include <math.h>
+        -:    6:#include "dominion.h"
+        -:    7:#include "dominion_helpers.h"
+        -:    8:#include "rngs.h"
+        -:    9:
+        -:   10:typedef enum {false, true} bool;
+        -:   11:
+function assertTrue called 600000 returned 100% blocks executed 100%
+   600000:   12:bool assertTrue(int var1, int var2, char* description) {
+   600000:   13:    bool expr = var1 == var2;
+   600000:   14:	if (!expr) {
+branch  0 taken 99% (fallthrough)
+branch  1 taken 1%
+   599559:   15:		printf("%s - ", description);
+call    0 returned 100%
+   599559:   16:		printf("\x1B[31mFAILED\x1B[0m\n");
+call    0 returned 100%
+   599559:   17:        printf("Expected %d but got %d\n", var1, var2);
+call    0 returned 100%
+        -:   18:	}
+        -:   19:
+   600000:   20:    return expr;
+        -:   21:}
+        -:   22:
+function randomlyGenerateGameState called 200000 returned 100% blocks executed 98%
+   200000:   23:void randomlyGenerateGameState(struct gameState* G) {
+        -:   24:	// Set number of players
+   200000:   25:	int numPlayers = rand() % (MAX_PLAYERS + 1 - 2) + 2;
+call    0 returned 100%
+   200000:   26:	if (numPlayers < 2) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   27:		numPlayers = 2;
+        -:   28:	}
+   200000:   29:    G->numPlayers = numPlayers;
+        -:   30:	
+        -:   31:	// Randomly choose the set of kingdom cards
+        -:   32:    // Shuffle deck and first 10 types are the kingdom cards
+        -:   33:    /*
+        -:   34:    int numKingCards = treasure_map - adventurer;
+        -:   35:	int randomCards[numKingCards];
+        -:   36:    for (int i = 0; i < numKingCards; i++) {
+        -:   37:        randomCards[i] = i + adventurer;
+        -:   38:    }
+        -:   39:	for (int i = 0; i < numKingCards; i++) {
+        -:   40:		int randIdx = rand() % (treasure_map + 1 - i) + i;
+        -:   41:		int tmp = randomCards[randIdx];
+        -:   42:		randomCards[randIdx] = randomCards[i];
+        -:   43:		randomCards[i] = tmp;
+        -:   44:	}
+        -:   45:    */
+        -:   46:    /*
+        -:   47:	int kingdomCards[10];
+        -:   48:	for (int i = 0; i < 10; i++) {
+        -:   49:		kingdomCards[i] = randomCards[i];
+        -:   50:	}
+        -:   51:    */
+  4200000:   52:    for (int i = adventurer; i <= treasure_map; i++) {
+branch  0 taken 95%
+branch  1 taken 5% (fallthrough)
+  4000000:   53:        G->supplyCount[i] = floor(Random() * 10);
+call    0 returned 100%
+        -:   54:    }
+        -:   55:
+        -:   56:    // Set curses
+   200000:   57:    int maxCurseCards = (numPlayers - 1) * 10;
+   200000:   58:    G->supplyCount[curse] = floor(Random() * maxCurseCards);
+call    0 returned 100%
+        -:   59:    // Set lands
+   200000:   60:    int maxLands = numPlayers == 2 ? 8 : 12;
+branch  0 taken 33% (fallthrough)
+branch  1 taken 67%
+   200000:   61:    G->supplyCount[estate] = floor(Random() * maxLands);
+call    0 returned 100%
+   200000:   62:    G->supplyCount[duchy] = floor(Random() * maxLands);
+call    0 returned 100%
+   200000:   63:    G->supplyCount[province] = floor(Random() * maxLands);
+call    0 returned 100%
+        -:   64:
+        -:   65:    // Set treasures
+   200000:   66:    G->supplyCount[copper] = floor(Random() * 60);
+call    0 returned 100%
+   200000:   67:    G->supplyCount[silver] = floor(Random() * 40);
+call    0 returned 100%
+   200000:   68:    G->supplyCount[gold] = floor(Random() * 30);
+call    0 returned 100%
+        -:   69:
+        -:   70:    // Set player decks, hands, and discard piles
+   799774:   71:    for (int p = 0; p < numPlayers; p++) {
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+   599774:   72:        int pDeckCount = rand() % MAX_DECK;
+call    0 returned 100%
+   599774:   73:        int pHandCount = rand() % MAX_HAND;
+call    0 returned 100%
+   599774:   74:        int pDiscardCount = rand() % MAX_DECK;
+call    0 returned 100%
+   599774:   75:        G->deckCount[p] = pDeckCount;
+   599774:   76:        G->handCount[p] = pHandCount;
+   599774:   77:        G->discardCount[p] = pDiscardCount;
+        -:   78:
+150345880:   79:        for (int i = 0; i < pDeckCount; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+149746106:   80:            G->deck[p][i] = rand() % (treasure_map + 1 - copper) + copper;
+call    0 returned 100%
+        -:   81:        }
+        -:   82:
+150425280:   83:        for (int i = 0; i < pHandCount; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+149825506:   84:            G->hand[p][i] = rand() % (treasure_map + 1 - copper) + copper;
+call    0 returned 100%
+        -:   85:        }
+        -:   86:
+150240116:   87:        for (int i = 0; i < pDiscardCount; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+149640342:   88:            G->discard[p][i] = rand() % (treasure_map + 1 - copper) + copper;
+call    0 returned 100%
+        -:   89:        }
+        -:   90:    }
+        -:   91:
+        -:   92:    // Set played cards
+   200000:   93:    int numPlayedCards = floor(Random() * MAX_DECK);
+call    0 returned 100%
+   200000:   94:    G->playedCardCount = numPlayedCards;
+ 50138255:   95:    for (int i = 0; i < numPlayedCards; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+ 49938255:   96:        G->playedCards[i] = rand() % (treasure_map + 1 - adventurer) + adventurer;
+call    0 returned 100%
+        -:   97:    }
+        -:   98:
+        -:   99:    // Set other state variables
+   200000:  100:    G->outpostPlayed = 0; // never used
+   200000:  101:    G->phase = floor(Random() * 3);
+call    0 returned 100%
+   200000:  102:    G->numActions = floor(Random() * 10);
+call    0 returned 100%
+   200000:  103:    G->numBuys = floor(Random() * 10);
+call    0 returned 100%
+   200000:  104:    G->whoseTurn = floor(Random() * numPlayers);
+call    0 returned 100%
+        -:  105:
+   799774:  106:    for (int p = 0; p < numPlayers; p++) {
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+   599774:  107:        updateCoins(p, G, 0);
+call    0 returned 100%
+        -:  108:    }
+        -:  109:
+        -:  110://	initializeGame(numPlayers, kingdomCards, rand(), G);
+   200000:  111:}
+        -:  112:
+function randomTestAdventurer called 1 returned 100% blocks executed 97%
+        1:  113:void randomTestAdventurer() {
+        1:  114:    bool allTestsPassed = false;
+   200001:  115:	for (int i = 0; i < 200000; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:  116:		struct gameState G;
+   200000:  117:        memset(&G, 23, sizeof(struct gameState));
+   200000:  118:		randomlyGenerateGameState(&G);
+call    0 returned 100%
+        -:  119:
+   200000:  120:        int advPos = floor(Random() * G.handCount[G.whoseTurn]);
+call    0 returned 100%
+   200000:  121:        G.hand[G.whoseTurn][advPos] = adventurer;
+   200000:  122:        updateCoins(G.whoseTurn, &G, 0);
+call    0 returned 100%
+        -:  123:
+   200000:  124:        int preHandCount = G.handCount[G.whoseTurn];
+   200000:  125:        int preDiscardCount = G.discardCount[G.whoseTurn];
+   200000:  126:        int preDeckCount = G.deckCount[G.whoseTurn];
+   200000:  127:        int preTreasuresInHand = 0;
+ 50178294:  128:        for (int i = 0; i < G.handCount[G.whoseTurn]; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+ 49978294:  129:            int curCard = G.hand[G.whoseTurn][i];
+ 49978294:  130:            if (curCard == copper || curCard == silver || curCard == gold) {
+branch  0 taken 96% (fallthrough)
+branch  1 taken 4%
+branch  2 taken 95% (fallthrough)
+branch  3 taken 5%
+branch  4 taken 5% (fallthrough)
+branch  5 taken 95%
+  6496373:  131:                preTreasuresInHand++;
+        -:  132:            }
+        -:  133:        }
+        -:  134:
+   200000:  135:		cardEffect(adventurer, 0, 0, 0, &G, 0, 0); // play Adventurer
+call    0 returned 100%
+        -:  136:		// Effect of adventurer is to draw cards until 2 treasures
+        -:  137:		// are found. Thus, hand size should be increased by 2,
+        -:  138:		// teasure count increased by 2, and discard pile increased
+        -:  139:		// and deck pile decreased by the number of other cards 
+        -:  140:		// drawn and then discarded.
+        -:  141:
+   200000:  142:		int postHandCount = G.handCount[G.whoseTurn];
+   200000:  143:		int postDiscardCount = G.discardCount[G.whoseTurn];
+   200000:  144:		int postDeckCount = G.deckCount[G.whoseTurn];
+   200000:  145:		int postTreasuresInHand = 0;
+ 50777467:  146:		for (int i = 0; i < G.handCount[G.whoseTurn]; i++) {
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+ 50577467:  147:			int curCard = G.hand[G.whoseTurn][i];
+ 50577467:  148:			if (curCard == copper || curCard == silver || curCard == gold) {
+branch  0 taken 95% (fallthrough)
+branch  1 taken 5%
+branch  2 taken 95% (fallthrough)
+branch  3 taken 5%
+branch  4 taken 5% (fallthrough)
+branch  5 taken 95%
+  7095872:  149:				postTreasuresInHand++;
+        -:  150:			}
+        -:  151:		}
+   200000:  152:		int numCardsDrawn = preDeckCount - postDeckCount;
+        -:  153:
+   200000:  154:        printf("\n---Iteration %d---\n", i);
+call    0 returned 100%
+   200000:  155:		allTestsPassed &= assertTrue(postHandCount, preHandCount + 2, "Hand count inc'd by 2");
+call    0 returned 100%
+   200000:  156:		allTestsPassed &= assertTrue(postTreasuresInHand - preTreasuresInHand, 2, "2 treasures drawn");
+call    0 returned 100%
+   200000:  157:		allTestsPassed &= assertTrue(postDiscardCount - preDiscardCount, numCardsDrawn - 2, "All other cards put in discard pile");
+call    0 returned 100%
+        -:  158:	}
+        -:  159:
+        1:  160:    if (allTestsPassed) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:  161:        printf("\x1B[32mALL TESTS PASSED\x1B[0m\n");
+call    0 never executed
+        -:  162:    } else {
+        1:  163:        printf("Some tests failed\n");
+call    0 returned 100%
+        -:  164:    }
+        1:  165:}
+        -:  166:
+function main called 1 returned 100% blocks executed 100%
+        1:  167:int main() {
+        1:  168:    PutSeed(-1);
+call    0 returned 100%
+        1:  169:	srand(time(0));
+call    0 returned 100%
+call    1 returned 100%
+        1:  170:	randomTestAdventurer();
+call    0 returned 100%
+        1:  171:	return 0;
+        -:  172:}
