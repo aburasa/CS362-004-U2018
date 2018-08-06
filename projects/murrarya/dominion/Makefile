@@ -36,9 +36,10 @@ randomtests: dominion.o rngs.o randomtestcard1.c
 	./randomtestcard1 > randomtestresults.out
 	./randomtestcard2 >> randomtestresults.out
 	./randomtestcard3 >> randomtestresults.out
-	gcov -b randomtestcard1 >> randomtestresults.out
-	gcov -b randomtestcard2 >> randomtestresults.out
-	gcov -b randomtestcard3 >> randomtestresults.out
+	gcov -f -b dominion.c >> randomtestresults.out
+	#gcov -b randomtestcard1 >> randomtestresults.out
+	#gcov -b randomtestcard2 >> randomtestresults.out
+	#gcov -b randomtestcard3 >> randomtestresults.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)
