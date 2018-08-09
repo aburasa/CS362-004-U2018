@@ -55,6 +55,17 @@ unittestresults: dominion.o rngs.o unittest1.c unittest2.c unittest3.c unittest4
 	./cardtest4 >> unittestresults.out
 	gcov -b cardtest4 >> unittestresults.out
 
+randomtests: dominion.o rngs.o randomtestcard1.c
+	gcc --std=c99 -g -lm -fprofile-arcs -ftest-coverage randomtestcard1.c dominion.o rngs.o -o randomtestcard1
+	gcc --std=c99 -g -lm -fprofile-arcs -ftest-coverage randomtestcard2.c dominion.o rngs.o -o randomtestcard2
+	gcc --std=c99 -g -lm -fprofile-arcs -ftest-coverage randomtestcard3.c dominion.o rngs.o -o randomtestcard3
+	./randomtestcard1 > randomtestresults.out
+	./randomtestcard2 >> randomtestresults.out
+	./randomtestcard3 >> randomtestresults.out
+	gcov -f -b dominion.c >> randomtestresults.out
+	#gcov -b randomtestcard1 >> randomtestresults.out
+	#gcov -b randomtestcard2 >> randomtestresults.out
+	#gcov -b randomtestcard3 >> randomtestresults.out
 
 player: player.c interface.o
 	gcc -o player player.c -g  dominion.o rngs.o interface.o $(CFLAGS)

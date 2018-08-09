@@ -1235,7 +1235,10 @@ int playSmithy(int currentPlayer, struct gameState *state, int handPos) {
   }
 
   //discard card from hand
-  discardCard(currentPlayer, handPos, state, 0);
+  // The bug that used to be here caused segfaults. Per the instructor's
+  // Piazza answer here https://piazza.com/class/jino9xi6ivg1h3?cid=77
+  // I have removed the bug since it precluded testing
+  discardCard(handPos, currentPlayer, state, 0);
   return 0;
 }
 
