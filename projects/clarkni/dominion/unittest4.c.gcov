@@ -1,0 +1,109 @@
+        -:    0:Source:unittest4.c
+        -:    0:Graph:unittest4.gcno
+        -:    0:Data:unittest4.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* CS362 - Assignment 3
+        -:    2: * unittest4.c --> tests whether the game is over because there are no province card 
+        -:    3: */
+        -:    4:
+        -:    5:#include "dominion.h"
+        -:    6:#include "dominion_helpers.h"
+        -:    7:#include <string.h>
+        -:    8:#include <stdio.h>
+        -:    9:#include <assert.h>
+        -:   10:#include "rngs.h"
+        -:   11:
+        -:   12://count of test failures - global count
+        -:   13:int failuresCount = 0;
+        -:   14:
+        -:   15://own asserttrue function
+function assertTrue called 0 returned 0% blocks executed 0%
+    #####:   16:void assertTrue(int a, int b){
+    #####:   17:	if (a == b)
+branch  0 never executed
+branch  1 never executed
+    #####:   18:		printf("Test: PASS");
+call    0 never executed
+        -:   19:	else {
+    #####:   20:		printf("Test: FAIL\n");
+call    0 never executed
+    #####:   21:		failuresCount++;
+        -:   22:	}
+    #####:   23:}
+        -:   24:
+function main called 1 returned 100% blocks executed 85%
+        1:   25:int main(){
+        -:   26:
+        1:   27:	printf("*************TESTING isGameOver Function*****************\n");
+call    0 returned 100%
+        -:   28:	struct gameState game;
+        1:   29:	int numSupply = 25;
+        -:   30:	int actual, expected;
+        -:   31:
+        -:   32:	//initialize
+       26:   33:	for (int i = 0; i < numSupply; i++){
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+       25:   34:		game.supplyCount[i] = 1;
+        -:   35:	}
+        -:   36:
+        1:   37:	printf("Tests for: isGameOver? \n");
+call    0 returned 100%
+        -:   38:
+        1:   39:	printf("Test 1: \n");
+call    0 returned 100%
+        1:   40:	expected = 0;
+        1:   41:	actual = isGameOver(&game);
+call    0 returned 100%
+        1:   42:	printf("%s", (actual == expected) ? "PASS" : "FAIL");
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+call    2 returned 100%
+        1:   43:	printf("\nShuld return 0, since province card is present and there are no empty piles\n");
+call    0 returned 100%
+        -:   44:
+        1:   45:	printf("Test 2: \n");
+call    0 returned 100%
+        1:   46:	expected = 1;
+        1:   47:	game.supplyCount[province] = 0;
+        1:   48:	actual = isGameOver(&game);
+call    0 returned 100%
+        1:   49:	printf("%s", (actual == expected) ? "PASS" : "FAIL");
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+call    2 returned 100%
+        1:   50:	printf("\nshuld return 1, since no province card is present \n");
+call    0 returned 100%
+        -:   51:
+        1:   52:	printf("Test 3: ");
+call    0 returned 100%
+        1:   53:	expected = 1;
+        1:   54:	game.supplyCount[feast] = game.supplyCount[baron] = game.supplyCount[village] = 0;
+        1:   55:	actual = isGameOver(&game);
+call    0 returned 100%
+        1:   56:	printf("%s", (actual == expected) ? "PASS" : "FAIL");
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+call    2 returned 100%
+        1:   57:	printf("\nshuld return 1, because there 3 empty piles, but there is one province card\n");
+call    0 returned 100%
+        -:   58:
+        1:   59:	if (failuresCount) {
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   60:        printf("\nTEST FAILED\n");
+call    0 never executed
+    #####:   61:        printf("Fails: %d\n",failuresCount);
+call    0 never executed
+        -:   62:    }
+        -:   63:    else {
+        1:   64:        printf("\nTEST SUCCESSFULLY COMPLETED\n\n");
+call    0 returned 100%
+        -:   65:    }
+        -:   66:
+        1:   67:    printf("\n*** TESTING COMPLETED*** \n ");
+call    0 returned 100%
+        -:   68:
+        1:   69:	return 0;
+        -:   70:}
