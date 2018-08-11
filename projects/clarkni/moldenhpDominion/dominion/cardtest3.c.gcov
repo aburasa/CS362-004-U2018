@@ -1,0 +1,104 @@
+        -:    0:Source:cardtest3.c
+        -:    0:Graph:cardtest3.gcno
+        -:    0:Data:cardtest3.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    1:/* CS362 - Assignment 3
+        -:    2: * cardtest3.c --> test for card council_room
+        -:    3: */
+        -:    4:
+        -:    5:#include "dominion.h"
+        -:    6:#include "dominion_helpers.h"
+        -:    7:#include <string.h>
+        -:    8:#include <stdio.h>
+        -:    9:#include <assert.h>
+        -:   10:#include "rngs.h"
+        -:   11:
+        -:   12:
+        -:   13:
+        -:   14:
+        -:   15://count of test failures - global count
+        -:   16:int failuresCount = 0;
+        -:   17:
+        -:   18://own asserttrue function
+       36:   19:void assertTrue(int a, int b){
+       36:   20:    if (a == b)
+       30:   21:        printf("Test: PASS");
+        -:   22:    else {
+        6:   23:        printf("Test: FAIL\n");
+        6:   24:        failuresCount++;
+        -:   25:    }
+       36:   26:}
+        -:   27:
+        2:   28:int main(){
+        -:   29:
+        2:   30:    printf("***********Testing for Card COUNCIL_ROOM ********************\n");
+        2:   31:    int numPlayers = 2;
+        2:   32:    int player0 = 0;
+        2:   33:    int player1 = 1;
+        -:   34:    
+        2:   35:    int handPosition = 0;
+        2:   36:    int choice1 = 0,  choice2 = 0, choice3 = 0, bonus = 0;
+        -:   37:
+        -:   38:    //kingdom cards
+        2:   39:    int k[10] = {adventurer, smithy, great_hall, council_room, 
+        -:   40:                 embargo, steward, feast, baron, village, gardens};
+        -:   41:
+        2:   42:    int seed = 1000;
+        -:   43:
+        -:   44:    struct gameState game, originalGame;
+        -:   45:
+        2:   46:    memset(&game, 25, sizeof(struct gameState));
+        2:   47:    memset(&originalGame, 25, sizeof(struct gameState));
+        -:   48:
+        -:   49:    //initialize game
+        2:   50:    initializeGame(numPlayers, k, seed, &game);
+        -:   51:
+        -:   52:    //copy to preserve it
+        2:   53:    memcpy(&originalGame, &game, sizeof(struct gameState));
+        -:   54:
+        2:   55:    printf("TEST FOR COUNCIL_ROOM\n");
+        -:   56:
+        -:   57:    
+        2:   58:    cardEffect(council_room, choice1, choice2, choice3, &game, handPosition, &bonus);
+        -:   59:
+        2:   60:    printf("\nDid Player 0 gain 4 cards?\n");
+        2:   61:    assertTrue(game.handCount[player0], originalGame.handCount[player0] + 3);
+        -:   62:
+        2:   63:    printf("\nPlayer 0 gains 3 cards from own pile\n");
+        2:   64:    assertTrue(game.deckCount[player0], originalGame.deckCount[player0] - 4);
+        -:   65:
+        2:   66:    printf("\nPlayer 0 buys more\n");
+        2:   67:    assertTrue(game.numBuys, originalGame.numBuys);
+        -:   68:
+        -:   69:    
+        2:   70:    printf("\nAny change to victory card piles?\n");
+        2:   71:    printf("Duchy Pile\n");
+        2:   72:    assertTrue(game.supplyCount[duchy],originalGame.supplyCount[duchy]);
+        2:   73:    printf("\nProvince Pile\n");
+        2:   74:    assertTrue(game.supplyCount[province],originalGame.supplyCount[province]);
+        2:   75:    printf("\nEstate Pile\n");
+        2:   76:    assertTrue(game.supplyCount[estate],originalGame.supplyCount[estate]);
+        -:   77:
+        2:   78:    printf("\nAny change to kingdom card piles?\n");
+       22:   79:    for (int i = 0; i < 10; i++)
+       20:   80:        assertTrue(game.supplyCount[k[i]],originalGame.supplyCount[k[i]]);
+        -:   81:    
+        2:   82:    printf("\nCheck to see if Player 1 gained a card\n");
+        2:   83:    printf("Hand count for player 1 - is it valid?\n");
+        2:   84:    assertTrue(game.handCount[player1],originalGame.handCount[player1] +1);
+        2:   85:    printf("\nDeck count for player 1 to see if gained a card from own deck - is is valid?\n");
+        2:   86:    assertTrue(game.deckCount[player1],originalGame.deckCount[player1] -1);
+        -:   87:
+        -:   88:
+        2:   89:    if (failuresCount) {
+        2:   90:        printf("\nNUMBER OF TESTS FAILED\n");
+        2:   91:        printf("Fails: %d\n",failuresCount);
+        -:   92:    }
+        -:   93:    else {
+    #####:   94:        printf("\nTEST SUCCESSFULLY COMPLETED\n\n");
+        -:   95:    }
+        -:   96:
+        2:   97:    return 0;
+        -:   98:
+        -:   99:}

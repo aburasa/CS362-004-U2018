@@ -1,0 +1,75 @@
+        -:    0:Source:unittest4.c
+        -:    0:Graph:unittest4.gcno
+        -:    0:Data:unittest4.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    1:/* CS362 - Assignment 3
+        -:    2: * unittest4.c --> tests whether the game is over because there are no province card 
+        -:    3: */
+        -:    4:
+        -:    5:#include "dominion.h"
+        -:    6:#include "dominion_helpers.h"
+        -:    7:#include <string.h>
+        -:    8:#include <stdio.h>
+        -:    9:#include <assert.h>
+        -:   10:#include "rngs.h"
+        -:   11:
+        -:   12://count of test failures - global count
+        -:   13:int failuresCount = 0;
+        -:   14:
+        -:   15://own asserttrue function
+    #####:   16:void assertTrue(int a, int b){
+    #####:   17:	if (a == b)
+    #####:   18:		printf("Test: PASS");
+        -:   19:	else {
+    #####:   20:		printf("Test: FAIL\n");
+    #####:   21:		failuresCount++;
+        -:   22:	}
+    #####:   23:}
+        -:   24:
+        2:   25:int main(){
+        -:   26:
+        2:   27:	printf("*************TESTING isGameOver Function*****************\n");
+        -:   28:	struct gameState game;
+        2:   29:	int numSupply = 25;
+        -:   30:	int actual, expected;
+        -:   31:
+        -:   32:	//initialize
+       52:   33:	for (int i = 0; i < numSupply; i++){
+       50:   34:		game.supplyCount[i] = 1;
+        -:   35:	}
+        -:   36:
+        2:   37:	printf("Tests for: isGameOver? \n");
+        -:   38:
+        2:   39:	printf("Test 1: \n");
+        2:   40:	expected = 0;
+        2:   41:	actual = isGameOver(&game);
+        2:   42:	printf("%s", (actual == expected) ? "PASS" : "FAIL");
+        2:   43:	printf("\nShuld return 0, since province card is present and there are no empty piles\n");
+        -:   44:
+        2:   45:	printf("Test 2: \n");
+        2:   46:	expected = 1;
+        2:   47:	game.supplyCount[province] = 0;
+        2:   48:	actual = isGameOver(&game);
+        2:   49:	printf("%s", (actual == expected) ? "PASS" : "FAIL");
+        2:   50:	printf("\nshuld return 1, since no province card is present \n");
+        -:   51:
+        2:   52:	printf("Test 3: ");
+        2:   53:	expected = 1;
+        2:   54:	game.supplyCount[feast] = game.supplyCount[baron] = game.supplyCount[village] = 0;
+        2:   55:	actual = isGameOver(&game);
+        2:   56:	printf("%s", (actual == expected) ? "PASS" : "FAIL");
+        2:   57:	printf("\nshuld return 1, because there 3 empty piles, but there is one province card\n");
+        -:   58:
+        2:   59:	if (failuresCount) {
+    #####:   60:        printf("\nTEST FAILED\n");
+    #####:   61:        printf("Fails: %d\n",failuresCount);
+        -:   62:    }
+        -:   63:    else {
+        2:   64:        printf("\nTEST SUCCESSFULLY COMPLETED\n\n");
+        -:   65:    }
+        -:   66:
+        2:   67:    printf("\n*** TESTING COMPLETED*** \n ");
+        -:   68:
+        2:   69:	return 0;
+        -:   70:}
