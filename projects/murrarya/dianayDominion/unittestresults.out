@@ -1,0 +1,191 @@
+
+--- TESTING buyCard() ---
+buyCard allows a buy when all conditions met - [32mPASSED[0m
+Coins are correctly decreased after a buy - [32mPASSED[0m
+Number of buys is decremented after a buy - [32mPASSED[0m
+Supply count of card is decremented after a buy - [32mPASSED[0m
+Discard count incremented after buy - [32mPASSED[0m
+Discard pile contains bought card - [32mPASSED[0m
+buyCard does not allow a buy when no buys left - [32mPASSED[0m
+Coins are not decreased after a failed buy due to no buys left - [32mPASSED[0m
+Number of buys is not decremented after a failed buy due to no buys left - [32mPASSED[0m
+Supply count of card is not decremented due to no buys left - [32mPASSED[0m
+Discard count is not incremented after buy when no buys left - [32mPASSED[0m
+buyCard does not allow a buy when no coins are left - [32mPASSED[0m
+Coins are not decreased after a failed buy due to no coins - [32mPASSED[0m
+Number of buys is not decreased after a failed buy due to no coins - [32mPASSED[0m
+Supply count of card is not decremented due to no coins - [32mPASSED[0m
+Discard count is not incremented after buy when no coins - [32mPASSED[0m
+buyCard does not allow a buy when insufficient coins - [32mPASSED[0m
+Coins are not decreased when insufficient coins - [32mPASSED[0m
+Number of buys is not decreased when insufficient coins - [32mPASSED[0m
+Supply count of card is not decremented when insufficient coins - [32mPASSED[0m
+Discard count is not incremented after buy when insufficient coins - [32mPASSED[0m
+buyCard does not allow a buy when chosen card not left - [32mPASSED[0m
+Coins are not decreased when chosen card not left - [31mFAILED[0m
+Number of buys is not decreased when chosen card not left - [32mPASSED[0m
+Cards are not decreased when chosen card is not left - [32mPASSED[0m
+Discard count is not incremented after buy when chosen card not left - [32mPASSED[0m
+
+--- TESTING updateCoins() ---
+Coins are 0 when no treasures in hand - [32mPASSED[0m
+Coins are increased by bonus - [32mPASSED[0m
+Coins are 1 when only one copper in hand - [32mPASSED[0m
+Coins are 2 when only one silver in hand - [32mPASSED[0m
+Coins are 3 when only one gold in hand - [32mPASSED[0m
+Coins and bonus are properly combined - [31mFAILED[0m
+
+--- TESTING gainCard() ---
+Gained card is added to deck - [32mPASSED[0m
+Gained card is removed from supply - [32mPASSED[0m
+Gained card is added to hand - [32mPASSED[0m
+Gained card is removed from supply - [32mPASSED[0m
+Gained card is added to discard pile - [32mPASSED[0m
+Gained card is removed from supply - [32mPASSED[0m
+gainCard() exits with error status if card supply is empty - [32mPASSED[0m
+Card's supply is not decremented if pile is empty - [32mPASSED[0m
+Card is not added to hand if supply pile is empty - [32mPASSED[0m
+gainCard() exits with error status if card not in game - [32mPASSED[0m
+Card's supply is not decremented if card not in game - [31mFAILED[0m
+Card is not added to hand if card not in game - [32mPASSED[0m
+
+--- TESTING isGameOver() ---
+game doesn't end if a province card is left and no supply piles gone - [32mPASSED[0m
+Game doesn't end if < 3 supply piles gone - [32mPASSED[0m
+Game ends if province cards are gone - [32mPASSED[0m
+Game ends if three supply piles are gone - [32mPASSED[0m
+Game ends if more than three supply piles are gone - [32mPASSED[0m
+Game ends if all conditions are met - [32mPASSED[0m
+Function 'updateCoins'
+Lines executed:100.00% of 11
+Branches executed:100.00% of 8
+Taken at least once:100.00% of 8
+No calls
+
+Function 'gainCard'
+Lines executed:100.00% of 13
+Branches executed:100.00% of 6
+Taken at least once:100.00% of 6
+Calls executed:100.00% of 1
+
+Function 'discardCard'
+Lines executed:84.62% of 13
+Branches executed:100.00% of 6
+Taken at least once:50.00% of 6
+No calls
+
+Function 'cardEffect'
+Lines executed:20.76% of 236
+Branches executed:28.64% of 199
+Taken at least once:18.59% of 199
+Calls executed:20.31% of 64
+
+Function 'getCost'
+Lines executed:23.33% of 30
+Branches executed:100.00% of 28
+Taken at least once:17.86% of 28
+No calls
+
+Function 'drawCard'
+Lines executed:100.00% of 22
+Branches executed:100.00% of 6
+Taken at least once:100.00% of 6
+Calls executed:100.00% of 1
+
+Function 'getWinners'
+Lines executed:0.00% of 24
+Branches executed:0.00% of 22
+Taken at least once:0.00% of 22
+Calls executed:0.00% of 2
+
+Function 'scoreFor'
+Lines executed:0.00% of 24
+Branches executed:0.00% of 42
+Taken at least once:0.00% of 42
+Calls executed:0.00% of 3
+
+Function 'isGameOver'
+Lines executed:100.00% of 10
+Branches executed:100.00% of 8
+Taken at least once:100.00% of 8
+No calls
+
+Function 'endTurn'
+Lines executed:0.00% of 20
+Branches executed:0.00% of 6
+Taken at least once:0.00% of 6
+Calls executed:0.00% of 3
+
+Function 'whoseTurn'
+Lines executed:100.00% of 2
+No branches
+No calls
+
+Function 'fullDeckCount'
+Lines executed:0.00% of 9
+Branches executed:0.00% of 12
+Taken at least once:0.00% of 12
+No calls
+
+Function 'supplyCount'
+Lines executed:100.00% of 2
+No branches
+No calls
+
+Function 'handCard'
+Lines executed:0.00% of 3
+No branches
+Calls executed:0.00% of 1
+
+Function 'numHandCards'
+Lines executed:0.00% of 2
+No branches
+Calls executed:0.00% of 1
+
+Function 'buyCard'
+Lines executed:100.00% of 13
+Branches executed:100.00% of 6
+Taken at least once:100.00% of 6
+Calls executed:100.00% of 4
+
+Function 'playCard'
+Lines executed:0.00% of 14
+Branches executed:0.00% of 10
+Taken at least once:0.00% of 10
+Calls executed:0.00% of 3
+
+Function 'shuffle'
+Lines executed:100.00% of 16
+Branches executed:100.00% of 8
+Taken at least once:100.00% of 8
+Calls executed:100.00% of 2
+
+Function 'initializeGame'
+Lines executed:83.87% of 62
+Branches executed:95.65% of 46
+Taken at least once:80.43% of 46
+Calls executed:100.00% of 5
+
+Function 'kingdomCards'
+Lines executed:0.00% of 13
+No branches
+No calls
+
+Function 'newGame'
+Lines executed:0.00% of 3
+No branches
+No calls
+
+Function 'compare'
+Lines executed:100.00% of 6
+Branches executed:100.00% of 4
+Taken at least once:100.00% of 4
+No calls
+
+File 'dominion.c'
+Lines executed:39.05% of 548
+Branches executed:43.41% of 417
+Taken at least once:30.70% of 417
+Calls executed:28.89% of 90
+Creating 'dominion.c.gcov'
+
