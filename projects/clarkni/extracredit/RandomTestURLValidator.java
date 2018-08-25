@@ -1,7 +1,6 @@
 
 /* ==================================================================
- * CS362 - 400 Summer 2018
- * Mui Clark
+ *
  * Description:  Random test generator for URLValidator valid method
  * Referernce:   Original UrlValidatorTest from Apache commons
  * ==================================================================
