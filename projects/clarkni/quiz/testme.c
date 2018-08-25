@@ -1,5 +1,4 @@
-/* CS 362 - Summer 2018
- * Mui Clark
+/* 
  * Random Testing quiz
  */
 
