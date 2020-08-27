@@ -1,0 +1,67 @@
+        -:    0:Source:unittest3.c
+        -:    0:Graph:unittest3.gcno
+        -:    0:Data:unittest3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* CS362 - Assignment 3
+        -:    2: * unittest3.c --> tests the next player's turn
+        -:    3: *                 to see whether another player is still in play
+        -:    4: */
+        -:    5:
+        -:    6:#include "dominion.h"
+        -:    7:#include "dominion_helpers.h"
+        -:    8:#include <string.h>
+        -:    9:#include <stdio.h>
+        -:   10:#include <assert.h>
+        -:   11:#include <stdlib.h>
+        -:   12:#include "rngs.h"
+        -:   13:
+function main called 1 returned 100% blocks executed 94%
+        1:   14:int main(){
+        -:   15:
+        -:   16:
+        1:   17:	printf("*************TESTING whoseTurn Function*****************\n");
+call    0 returned 100%
+        -:   18:	struct gameState game;
+        -:   19:
+        1:   20: 	int numPlayers = 2;
+        1:   21: 	int seed = 1000;
+        -:   22:
+        -:   23:	//kingdom cards
+        1:   24:	int k[10] = {adventurer, smithy, council_room, remodel,
+        -:   25:				 embargo, steward, feast, baron, village, gardens};
+        -:   26:
+        1:   27:	printf("Unit test 3: Who plays next? \n");
+call    0 returned 100%
+        1:   28:	printf("============================== \n");
+call    0 returned 100%
+        -:   29:
+        1:   30:	printf("Base game set to 4 players, so running test thrice\n");
+call    0 returned 100%
+        1:   31:	printf("other players still legal targets? \n");
+call    0 returned 100%
+        -:   32:
+        -:   33:	
+        -:   34:
+        4:   35:	for (int i = 2; i < 5; i++){
+branch  0 taken 75%
+branch  1 taken 25% (fallthrough)
+        3:   36:		int ab = initializeGame(numPlayers, k, seed, &game);
+call    0 returned 100%
+        3:   37:		ab = whoseTurn(&game);
+call    0 returned 100%
+        3:   38:		assert(ab == game.whoseTurn);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+        3:   39:		printf("%d test passed \n", i);
+call    0 returned 100%
+        -:   40:	}
+        -:   41:
+        1:   42:	printf("\n *** TEST COMPLETED ***\n ");
+call    0 returned 100%
+        -:   43:
+        -:   44:
+        1:   45:	return 0;
+        -:   46:}
+        -:   47:
