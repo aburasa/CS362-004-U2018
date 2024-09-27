@@ -1,0 +1,116 @@
+        -:    0:Source:unittest2.c
+        -:    0:Graph:unittest2.gcno
+        -:    0:Data:unittest2.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    1:/*/* CS362 - Assignment 3
+        -:    2: * unittest1.c --> UpdateCoins()
+        -:    3: */
+        -:    4:
+        -:    5:#include "dominion.h"
+        -:    6:#include "dominion_helpers.h"
+        -:    7:#include <string.h>
+        -:    8:#include <stdio.h>
+        -:    9:#include <assert.h>
+        -:   10:#include "rngs.h"
+        -:   11:
+        -:   12:
+        -:   13://count of test failures - global count
+        -:   14:int failuresCount = 0;
+        -:   15:
+        -:   16://own asserttrue function
+        6:   17:void assertTrue(int a, int b){
+        6:   18:	if (a == b)
+    #####:   19:		printf("Test: PASS");
+        -:   20:	else {
+        6:   21:		printf("Test: FAIL\n");
+        6:   22:		failuresCount++;
+        -:   23:	}
+        6:   24:}
+        -:   25:
+        -:   26://main function to run tests
+        2:   27:int main(){
+        -:   28:
+        2:   29:	printf("*************TESTING updateCoins Function*****************\n");
+        -:   30:
+        -:   31:	struct gameState game;
+        2:   32:	int numPlayers = 2;
+        2:   33:	int player = 0;
+        -:   34:	int handCount;
+        -:   35:	//kingdom cards
+        2:   36:	int k[10] = {adventurer, smithy, great_hall, council_room, 
+        -:   37:				 embargo, steward, feast, baron, village, gardens};
+        -:   38:
+        2:   39:	int seed = 2000;
+        2:   40:	int bonus = 1;
+        -:   41:	int expected, actual;
+        -:   42:
+        -:   43:	int coppers[MAX_HAND];
+        -:   44:	int silvers[MAX_HAND];
+        -:   45:	int golds[MAX_HAND];
+        -:   46:
+        -:   47:	//array to hold treasure
+     1002:   48:	for (int i = 0; i< MAX_HAND; i++){
+     1000:   49:		coppers[i] = copper;
+     1000:   50:		silvers[i] = silver;
+     1000:   51:		golds[i] = gold;
+        -:   52:	}
+        -:   53:
+        -:   54:	// test how updateCoins handles each treasure card, bonus and hand count
+        6:   55:    for (handCount = 0; handCount <= 5; handCount = handCount + 5) {
+        4:   56:        printf("\nTreasure cards: %d\n",handCount);
+        4:   57:        printf("Bonus: %d\n", bonus);
+        -:   58:}
+        2:   59:	printf("Testing for updateCoins()\n");
+        -:   60:
+        -:   61:	//initialize game with 2 players with seed of 2000
+        -:   62:
+        2:   63:	initializeGame(numPlayers, k, seed, &game);
+        -:   64:
+        2:   65:	printf("Test 1: standard initial game state for player 0, with no bonus, coins should be 4\n");
+        2:   66:	expected = 4;
+        2:   67:	updateCoins(player, &game, bonus);
+        2:   68:	actual = game.coins;
+        2:   69:	printf("Does the initial hand consist of 4 coins?\n");
+        2:   70:	printf("actual is %d\n", game.coins);
+        2:   71:	printf("%s", (actual == expected) ? "PASS" : "FAIL");
+        2:   72:	printf("\n");
+        -:   73:	
+        -:   74:
+        -:   75:	//changing player 0 to 1 gold, 1 silver and 2 copper.  Give 1 bonus
+        2:   76:	game.hand[player][0] = gold;
+        2:   77:	game.hand[player][1] = silver;
+        2:   78:	bonus = 1;
+        -:   79:
+        2:   80:	printf("\nTest 2: expect the coins to be updated to 8\n");
+        2:   81:	expected = 8;
+        2:   82:	updateCoins(player, &game, bonus);
+        2:   83:	actual = game.coins;
+        2:   84:	printf("actual is %d\n", game.coins);
+        2:   85:	printf("Did the Update coins increase to 8 for the second hand?\n");
+        2:   86:	printf("%s", (actual == expected) ? "PASS" : "FAIL");
+        2:   87:	printf("\n");
+        -:   88:
+        2:   89:	printf("\nTest 3: Copper coins count,\n");
+        2:   90:	printf("actual in copper is %d\n", game.coins);
+        2:   91:	printf("expected in copper is %d\n", handCount*1+bonus);
+        2:   92:	assertTrue(game.coins,handCount*1+bonus);
+        -:   93:
+        -:   94:
+        2:   95:	printf("\nTest 4: Silver coins count,\n");
+        2:   96:	printf("actual in silver is %d\n", game.coins);
+        2:   97:	printf("expected in silver is %d\n", handCount*2+bonus);
+        2:   98:	assertTrue(game.coins,handCount*2+bonus);
+        -:   99:
+        2:  100:	printf("\nTest 5: Gold coins count,\n");
+        2:  101:	printf("actual in gold is %d\n", game.coins);
+        2:  102:	printf("expected in gold is %d\n", handCount*3+bonus);
+        2:  103:	assertTrue(game.coins,handCount*3+bonus);
+        -:  104:
+        2:  105:	printf("\n*** TESTING COMPLETED  *** \n ");
+        -:  106:
+        2:  107:	return 0;
+        -:  108:
+        -:  109:}
+        -:  110:
+        -:  111:

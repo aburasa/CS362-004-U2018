@@ -1,0 +1,65 @@
+        -:    0:Source:unittest1.c
+        -:    0:Graph:unittest1.gcno
+        -:    0:Data:unittest1.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    1:/* CS362 - Assignment 3
+        -:    2: * unittest1.c --> tests whether player is able to buy the card
+        -:    3: *                 Selected this function because it affects all players
+        -:    4: */
+        -:    5:  
+        -:    6:
+        -:    7:#include "dominion.h"
+        -:    8:#include "dominion_helpers.h"
+        -:    9:#include <string.h>
+        -:   10:#include <stdio.h>
+        -:   11:#include <assert.h>
+        -:   12:#include "rngs.h"
+        -:   13:
+        -:   14:
+        -:   15:
+        2:   16:int main(int arg, char** argv){
+        -:   17:
+        2:   18:	printf("*************TESTING buyCard Function*****************\n");
+        2:   19:	printf("Unit test: \n");
+        -:   20:
+        -:   21:	struct gameState game;
+        -:   22:
+        2:   23:	game.numBuys = 2;
+        2:   24:	game.coins = 2;
+        -:   25:
+        2:   26:	printf("Not enough coins to buy? \n");
+        2:   27:	int testBuy = buyCard(2, &game);
+        -:   28:
+        2:   29:	if (testBuy == -1)
+        2:   30:		printf("test passed");
+        -:   31:	else
+    #####:   32:		printf("test failed");
+        -:   33:
+        2:   34:	printf("\n try to buy specific card\n");
+        2:   35:	game.coins = 10;
+        2:   36:	testBuy = buyCard(2, &game);
+        2:   37:		if (testBuy == 0)
+    #####:   38:			printf("test passed");
+        -:   39:		else
+        2:   40:			printf("test failed");
+        -:   41:
+        2:   42:	printf("\n checking amount \n");
+        2:   43:	testBuy = buyCard(2, &game);
+        2:   44:		if (testBuy == 0)
+    #####:   45:			printf("test passed");
+        -:   46:		else
+        2:   47:			printf("test failed");
+        -:   48:
+        2:   49:	printf("\n Does user have enough buying power?\n");
+        2:   50:	game.coins = 6;
+        2:   51:	testBuy = buyCard(2, &game);
+        2:   52:		if (testBuy == -1)
+        2:   53:			printf("test passed");
+        -:   54:		else
+    #####:   55:			printf("test failed");	
+        -:   56:
+        2:   57:	printf("\n*** TESTING COMPLETED SUCCESSFULLY*** \n ");
+        -:   58:
+        2:   59:	return 0;
+        -:   60:}

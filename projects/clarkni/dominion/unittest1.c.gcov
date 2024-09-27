@@ -1,0 +1,93 @@
+        -:    0:Source:unittest1.c
+        -:    0:Graph:unittest1.gcno
+        -:    0:Data:unittest1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/* CS362 - Assignment 3
+        -:    2: * unittest1.c --> tests whether player is able to buy the card
+        -:    3: *                 Selected this function because it affects all players
+        -:    4: */
+        -:    5:  
+        -:    6:
+        -:    7:#include "dominion.h"
+        -:    8:#include "dominion_helpers.h"
+        -:    9:#include <string.h>
+        -:   10:#include <stdio.h>
+        -:   11:#include <assert.h>
+        -:   12:#include "rngs.h"
+        -:   13:
+        -:   14:
+        -:   15:
+function main called 1 returned 100% blocks executed 84%
+        1:   16:int main(int arg, char** argv){
+        -:   17:
+        1:   18:	printf("*************TESTING buyCard Function*****************\n");
+call    0 returned 100%
+        1:   19:	printf("Unit test: \n");
+call    0 returned 100%
+        -:   20:
+        -:   21:	struct gameState game;
+        -:   22:
+        1:   23:	game.numBuys = 2;
+        1:   24:	game.coins = 2;
+        -:   25:
+        1:   26:	printf("Not enough coins to buy? \n");
+call    0 returned 100%
+        1:   27:	int testBuy = buyCard(2, &game);
+call    0 returned 100%
+        -:   28:
+        1:   29:	if (testBuy == -1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:   30:		printf("test passed");
+call    0 returned 100%
+        -:   31:	else
+    #####:   32:		printf("test failed");
+call    0 never executed
+        -:   33:
+        1:   34:	printf("\n try to buy specific card\n");
+call    0 returned 100%
+        1:   35:	game.coins = 10;
+        1:   36:	testBuy = buyCard(2, &game);
+call    0 returned 100%
+        1:   37:		if (testBuy == 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   38:			printf("test passed");
+call    0 never executed
+        -:   39:		else
+        1:   40:			printf("test failed");
+call    0 returned 100%
+        -:   41:
+        1:   42:	printf("\n checking amount \n");
+call    0 returned 100%
+        1:   43:	testBuy = buyCard(2, &game);
+call    0 returned 100%
+        1:   44:		if (testBuy == 0)
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   45:			printf("test passed");
+call    0 never executed
+        -:   46:		else
+        1:   47:			printf("test failed");
+call    0 returned 100%
+        -:   48:
+        1:   49:	printf("\n Does user have enough buying power?\n");
+call    0 returned 100%
+        1:   50:	game.coins = 6;
+        1:   51:	testBuy = buyCard(2, &game);
+call    0 returned 100%
+        1:   52:		if (testBuy == -1)
+branch  0 taken 100% (fallthrough)
+branch  1 taken 0%
+        1:   53:			printf("test passed");
+call    0 returned 100%
+        -:   54:		else
+    #####:   55:			printf("test failed");	
+call    0 never executed
+        -:   56:
+        1:   57:	printf("\n*** TESTING COMPLETED SUCCESSFULLY*** \n ");
+call    0 returned 100%
+        -:   58:
+        1:   59:	return 0;
+        -:   60:}

@@ -1,0 +1,52 @@
+        -:    0:Source:unittest3.c
+        -:    0:Graph:unittest3.gcno
+        -:    0:Data:unittest3.gcda
+        -:    0:Runs:2
+        -:    0:Programs:1
+        -:    1:/* CS362 - Assignment 3
+        -:    2: * unittest3.c --> tests the next player's turn
+        -:    3: *                 to see whether another player is still in play
+        -:    4: */
+        -:    5:
+        -:    6:#include "dominion.h"
+        -:    7:#include "dominion_helpers.h"
+        -:    8:#include <string.h>
+        -:    9:#include <stdio.h>
+        -:   10:#include <assert.h>
+        -:   11:#include <stdlib.h>
+        -:   12:#include "rngs.h"
+        -:   13:
+        2:   14:int main(){
+        -:   15:
+        -:   16:
+        2:   17:	printf("*************TESTING whoseTurn Function*****************\n");
+        -:   18:	struct gameState game;
+        -:   19:
+        2:   20: 	int numPlayers = 2;
+        2:   21: 	int seed = 1000;
+        -:   22:
+        -:   23:	//kingdom cards
+        2:   24:	int k[10] = {adventurer, smithy, council_room, remodel,
+        -:   25:				 embargo, steward, feast, baron, village, gardens};
+        -:   26:
+        2:   27:	printf("Unit test 3: Who plays next? \n");
+        2:   28:	printf("============================== \n");
+        -:   29:
+        2:   30:	printf("Base game set to 4 players, so running test thrice\n");
+        2:   31:	printf("other players still legal targets? \n");
+        -:   32:
+        -:   33:	
+        -:   34:
+        8:   35:	for (int i = 2; i < 5; i++){
+        6:   36:		int ab = initializeGame(numPlayers, k, seed, &game);
+        6:   37:		ab = whoseTurn(&game);
+        6:   38:		assert(ab == game.whoseTurn);
+        6:   39:		printf("%d test passed \n", i);
+        -:   40:	}
+        -:   41:
+        2:   42:	printf("\n *** TEST COMPLETED ***\n ");
+        -:   43:
+        -:   44:
+        2:   45:	return 0;
+        -:   46:}
+        -:   47:
